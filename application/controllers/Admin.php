@@ -20,6 +20,28 @@ class Admin extends CI_Controller {
 	 */
 	public function index()
 	{
+		$this->load->library('firebase');
+		$firebase = $this->firebase->init();
+
+		$database = $firebase->createDatabase();
+
+		$database->getReference('users/'.'1')->set([
+       'userid' => '1 ',
+       'usercode' => 'Admin ',
+	   'userdate' => '',
+	   'nama' => 'admin',
+	   'jeniskelamin' => '',
+	   'tanggallahir' => '',
+	   'email' => '',
+	   'nohp' => '',
+	   'alamat' => '',
+	   'status' => 'admin',
+       'dlt' => false,
+	   'username' => 'admin',
+	   'password' => 'admin',
+      ]);
+
+
 		$this->load->view('login');  
 	}
 }
