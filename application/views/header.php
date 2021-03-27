@@ -19,7 +19,8 @@
 
     <!-- Custom styles for this template-->
     <link href="<?php echo base_url() ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
-
+    <script src="<?php echo base_url() ?>assets/vendor/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url() ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -46,6 +47,13 @@
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
+            </li>
+
+              <!-- Nav Item - Tables -->
+              <li class="nav-item">
+                <a class="nav-link" href="<?php echo site_url('User/Index') ?>">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>User</span></a>
             </li>
 
             <!-- Divider -->
@@ -127,12 +135,7 @@
                     <span>Charts</span></a>
             </li>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
-            </li>
+          
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -197,7 +200,7 @@
                 </a>
                
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="<?php echo site_url('Auth/SignOut') ?>" >
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
                 </a>

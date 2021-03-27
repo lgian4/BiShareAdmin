@@ -12,7 +12,7 @@ class User_Model extends CI_Model
         $this->database = $this->fire->createDatabase();
     }
 
-    public function get(int $userID = null)
+    public function get(string $userID = null)
     {
         if (empty($userID) || !isset($userID)) {return false;}
         if ($this->database->getReference($this->dbname)->getSnapshot()->hasChild($userID)) {
@@ -21,14 +21,26 @@ class User_Model extends CI_Model
             return false;
         }
     }
-
-    public function insert(array $data,int $userID)
+    public function GetList()
     {
+        $list = $this->database->getReference($this->dbname)->orderByChild("usercode")->getValue();
+        unset($list['count']);
+        return $list;
+    }
+
+    public function insert(array $data, string $userID)
+    {
+
         if (empty($data) || !isset($data)) {return false;}
-        foreach ($data as $key => $value) {
-            $this->database->getReference()->getChild($this->dbname +'/'+ $userID)->getChild($key)->set($value);
-        }
-        return true;
+
+        $updates = [
+            $this->dbname . '/' . $userID => $data,
+        ];
+        $this->database->getReference() // this is the root reference
+            ->update($updates);
+
+        return $data;
+
     }
 
     public function delete(int $userID)
@@ -68,7 +80,7 @@ class User_Model extends CI_Model
 
     }
 
-    public function Duplicate(string $username, string $email)
+    public function Duplicate(string $username, string $email, string $userid = null)
     {
 
         if (empty($username) || !isset($username)) {return null;}
@@ -78,51 +90,65 @@ class User_Model extends CI_Model
             ->equalTo($username)
             ->getValue();
 
-            
-        if (empty($user) || !isset($user)) {} 
-        else return true;
+        if (empty($user) || !isset($user) || ($userid != null && $user['userid' == $userid])) {} else {
+            return true;
+        }
 
         $user = $this->database->getReference($this->dbname)
-        ->orderByChild("email")
-        ->equalTo($email)
-        ->getValue();
+            ->orderByChild("email")
+            ->equalTo($email)
+            ->getValue();
 
-        
-
-        if (empty($user) || !isset($user)) {return false;}
-        else return true;
-        
+        if (empty($user) || !isset($user) || ($userid != null && $user['userid' == $userid])) {return false;} else {
+            return true;
+        }
 
     }
 
     public function Register(string $username, string $password, string $email, string $jeniskelamin, string $nama, string $nohp, string $tanggallahir)
     {
-        $newUserKey = $this->database->getReference('users')->push()->getKey();    
-        
+
         $usercode = $this->AddCount();
-        $postData =[
-            'userid' => $newUserKey,
-            'usercode' =>'U' . $usercode,
+        $postData = [
+            'userid' => $usercode,
+            'usercode' => 'U' . $usercode,
             'userdate' => date(),
             'nama' => $nama,
             'jeniskelamin' => $jeniskelamin,
             'tanggallahir' => $tanggallahir,
             'email' => $email,
-            'nohp' =>$nohp,
+            'nohp' => $nohp,
             'alamat' => '',
             'status' => 'customer',
             'dlt' => false,
             'username' => $username,
             'password' => $password,
-           ];
-        
-        
+        ];
+
         $updates = [
-            'users/'.$newUserKey => $postData,
-        ];    
-        
+            'users/' . $usercode => $postData,
+        ];
+
         $this->database->getReference() // this is the root reference
-           ->update($updates);
-return $postData;
+            ->update($updates);
+        return $postData;
+    }
+    public function GetEmpty()
+    {
+        return array(
+            "alamat" => "",
+            "dlt" => false,
+            "email" => "",
+            "jeniskelamin" => "",
+            "nama" => "",
+            "nohp" => "",
+            "password" => "",
+            "status" => "",
+            "tanggallahir" => "",
+            "usercode" => '',
+            "userdate" => date("Y-m-d H:i:s"),
+            "userid" => "",
+            "username" => "");
+
     }
 }

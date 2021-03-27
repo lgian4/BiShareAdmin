@@ -110,10 +110,10 @@ class Auth extends CI_Controller
         }
 
     }
-    public function logout()
+    public function SignOut()
     {
         $this->session->sess_destroy();
-        redirect('auth/index');
+        redirect('auth/SignIn');
     }
     public function index()
     {

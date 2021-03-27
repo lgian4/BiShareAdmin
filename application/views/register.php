@@ -43,48 +43,49 @@
                                         <h1 class="h4 text-gray-900 mb-4">Register</h1>
                                     </div>
 
-                                  
+
                                     <form action="<?php echo site_url('Auth/ProcessRegister') ?>" method="post">
-                                        <div class="form-group row">                                            
-                                                <input type="text" name="nama" class="form-control form-control-user"
-                                                     placeholder="Nama" required>
-                                                                                        
+                                        <div class="form-group row">
+                                            <input type="text" name="nama" class="form-control form-control-user"
+                                                placeholder="Nama" required>
+
                                         </div>
-                                        <div class="form-group row">                                            
-                                                <input type="text" name="email" class="form-control form-control-user"
-                                                     placeholder="Email" required>
-                                                                                        
+                                        <div class="form-group row">
+                                            <input type="text" name="email" class="form-control form-control-user"
+                                                placeholder="Email" required>
+
                                         </div>
-                                        <div class="form-group row">                                            
-                                               <select name='jeniskelamin' class=" form-control form-select" aria-label="Jenis Kelamin" required>
-  <option selected value="">Jenis Kelamin</option>
-  <option value="m">Laki-laki</option>
-  <option value="f">Wanita</option>
-  
-</select>
-                                                                                        
+                                        <div class="form-group row">
+                                            <select name='jeniskelamin' class=" form-control form-select"
+                                                aria-label="Jenis Kelamin" required>
+                                                <option selected value="">Jenis Kelamin</option>
+                                                <option value="m">Laki-laki</option>
+                                                <option value="f">Wanita</option>
+
+                                            </select>
+
                                         </div>
-                                        <div class="form-group row">                                            
-                                                <input type="text" name="nohp" class="form-control form-control-user"
-                                                     placeholder="No HP" required>
-                                                                                        
+                                        <div class="form-group row">
+                                            <input type="text" name="nohp" class="form-control form-control-user"
+                                                placeholder="No HP" required>
+
                                         </div>
-                                        <div class="form-group row">                                            
-                                                <input type="date" name="tanggallahir" class="form-control form-control-user"
-                                                     placeholder="Tanggal Lahir" >
-                                                                                        
+                                        <div class="form-group row">
+                                            <input type="date" name="tanggallahir"
+                                                class="form-control form-control-user" placeholder="Tanggal Lahir">
+
                                         </div>
-                                        <div class="form-group row">                                            
-                                                <input type="username" name="username" class="form-control form-control-user"
-                                                     placeholder="Username" required>
-                                                                                        
+                                        <div class="form-group row">
+                                            <input type="username" name="username"
+                                                class="form-control form-control-user" placeholder="Username" required>
+
                                         </div>
-                                        <div class="form-group row">                                            
-                                                <input type="password" name="password" class="form-control form-control-user"
-                                                     placeholder="Password" required>
-                                                                                        
+                                        <div class="form-group row">
+                                            <input type="password" name="password"
+                                                class="form-control form-control-user" placeholder="Password" required>
+
                                         </div>
-                                        
+
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Register Account
                                         </button>
