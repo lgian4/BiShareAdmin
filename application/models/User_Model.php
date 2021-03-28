@@ -21,13 +21,19 @@ class User_Model extends CI_Model
             return false;
         }
     }
+    
     public function GetList()
     {
-        $list = $this->database->getReference($this->dbname)->orderByChild("usercode")->getValue();
+        $list = $this->database->getReference($this->dbname)
+            ->orderByChild("dlt")
+            ->equalTo(false)            
+            ->getValue();
         unset($list['count']);
-        return $list;
-    }
+        usort($list, function ($a, $b) {     return strcmp($a["usercode"], $b["usercode"]); });
 
+        return  $list;
+    }
+  
     public function insert(array $data, string $userID)
     {
 
@@ -42,7 +48,23 @@ class User_Model extends CI_Model
         return $data;
 
     }
-
+    public function SoftDelete(int $userID)
+    {
+        if (empty($userID) || !isset($userID)) {return false;}
+        if ($this->database->getReference($this->dbname)->getSnapshot()->hasChild($userID)) {
+            $data = $this->database->getReference($this->dbname)->getChild($userID)->getValue();
+            $data['dlt'] = true;
+            $updates = [
+                $this->dbname . '/' . $userID => $data,
+            ];
+            $this->database->getReference() // this is the root reference
+                ->update($updates);
+    
+            return true;
+        } else {
+            return false;
+        }
+    }
     public function delete(int $userID)
     {
         if (empty($userID) || !isset($userID)) {return false;}
@@ -67,13 +89,15 @@ class User_Model extends CI_Model
         $user = $this->database->getReference($this->dbname)
             ->orderByChild("username")
             ->equalTo($username)
-
             ->getValue();
 
+            
+            
         if (empty($user) || !isset($user)) {return false;}
-
-        if ($user['1']['password'] == $password) {
-            return $user['1'];
+        $key = array_key_first($user);
+        if (empty($user[$key]) || !isset($user[$key])) {return false;}
+        if ($user[$key]['dlt'] == false && $user[$key]['password'] == $password) {
+            return $user[$key];
         } else {
             return null;
         }

@@ -110,6 +110,8 @@ class Auth extends CI_Controller
         }
 
     }
+
+   
     public function SignOut()
     {
         $this->session->sess_destroy();
@@ -122,6 +124,7 @@ class Auth extends CI_Controller
         }
         $data['page_title'] = 'Login';
         $data['nama'] = $this->session->userdata('nama');
+        $data['status'] = $this->session->userdata('status');
 
         $this->load->view('header', $data);
         $this->load->view('admin', $data);

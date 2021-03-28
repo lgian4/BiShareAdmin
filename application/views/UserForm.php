@@ -178,5 +178,7 @@ $(document).ready(function() {
     $('#dataTable').DataTable();
 
 });
+
+
 </script>
 <!-- /.container-fluid -->

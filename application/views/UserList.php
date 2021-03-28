@@ -8,11 +8,11 @@
     </div>
     <div class="card shadow mb-4">
         <div class="card-header ">
-        <div class="text-center text-danger">
-                                        <?php echo $error ?>
-                                    </div>
+            <div class="text-center text-danger">
+                <?php echo $error ?>
+            </div>
             <a href="<?php echo site_url('User/UserForm') ?>" class="btn btn-primary  btn-icon-split">
-           
+
                 <span class="icon text-white-50">
                     <i class="fas fa-plus"></i>
                 </span>
@@ -48,11 +48,16 @@
                             <td><?php echo $row['email']; ?></td>
                             <td><?php echo $row['userdate']; ?></td>
                             <td><?php echo $row['status']; ?></td>
-                            <td> 
-                                <a href="<?php echo site_url('User/UserForm/'.$row['userid']) ?>" class="btn btn-primary btn-circle btn-sm">
-                                        <i class="fa fa-link"></i>
-                                    </a>
-                                </td>
+                            <td>
+                                <a href="<?php echo site_url('User/UserForm/'.$row['userid']) ?>"
+                                    class="btn btn-primary btn-circle btn-sm">
+                                    <i class="fa fa-link"></i>
+                                </a>
+                                <button onclick="DeleteData('<?php echo $row['usercode'] ?>','<?php echo $row['userid'] ?>')"
+                                    class="btn btn-danger btn-circle btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
 
@@ -71,5 +76,57 @@
 $(document).ready(function() {
     $('#dataTable').DataTable();
 });
+
+function DeleteData(xusercode, xuserid) {
+    swal.fire({
+        title: "Apakah anda yakin untuk menghapus",
+        icon: 'error',
+        text:"Usercode : " + xusercode,
+        showCancelButton: true,
+        
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        buttonsStyling: true
+    }).then(function() {
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url('User/Delete') ?>",
+                data: {
+                    'userid': xuserid
+                },
+                cache: false,
+                success: function(response) {
+                    console.log(response);
+                    if(response['success']){
+                        swal.fire(
+                        "Success!",
+                        "Data telah terhapus!",
+                        "success"
+                    );
+                    location.reload(); 
+                    }
+                    else {
+
+                        swal.fire(
+                        response['head'],
+                        response['text'],
+                        "error"
+                    ); 
+                    }
+                    
+                },
+                failure: function(response) {
+                    swal.fire(
+                        "Internal Error",
+                        "Oops, your note was not saved.", // had a missing comma
+                        "error"
+                    )
+                }
+            });
+        },
+        function(dismiss) {
+            
+        });
+}
 </script>
 <!-- /.container-fluid -->
