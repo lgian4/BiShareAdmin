@@ -59,6 +59,11 @@
                     <i class="fas fa-fw fa-user"></i>
                     <span>User</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo site_url('Toko/Index') ?>">
+                    <i class="fas fa-fw fa-building"></i>
+                    <span>Toko</span></a>
+            </li>
             
             <?php }?>
             <!-- Divider -->
@@ -201,7 +206,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="<?php echo site_url('User/Profile') ?>">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>

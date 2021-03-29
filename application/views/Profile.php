@@ -3,16 +3,16 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">User Form </h1>
+        <h1 class="h3 mb-0 text-gray-800">Profile</h1>
 
     </div>
     <div class="card shadow mb-4">
 
         <div class="card-body">
-        <div class="text-center text-danger">
+            <div class="text-center text-danger">
                 <?php echo $error ?>
             </div>
-            <form action="<?php echo site_url('User/Save') ?>" method="post">
+            <form action="<?php echo site_url('User/SaveProfile') ?>" method="post">
                 <input type="hidden" name="userid" value="<?php echo $user['userid'] ?>" />
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Status</label>
@@ -54,7 +54,7 @@
                     );
                     echo form_dropdown('jeniskelamin', $options, $user['jeniskelamin'],'class="form-control"');
                      ?>
-                     
+
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -125,7 +125,7 @@
                         ?>
                     </div>
                 </div>
-              
+
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Username</label>
                     <div class="col-sm-10">
@@ -161,12 +161,43 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success  btn-icon-split">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-save"></i>
-                                        </span>
-                                        <span class="text">Save</span>
-                                    </button>
-               
+                    <span class="icon text-white-50">
+                        <i class="fas fa-save"></i>
+                    </span>
+                    <span class="text">Save</span>
+                </button>
+<?php  if( (!isset($user['tokoid']) || $user['tokoid'] == '') &&  $user['status'] == 'customer'){ $user['tokoid'] ='' ;?>
+
+    <a href="<?php echo site_url('Toko/TokoForm/'.$user['userid'].'/'. $user['tokoid'] ) ?>" class="btn btn-primary  btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-store"></i>
+                    </span>
+                    <span class="text">Request Buka Toko</span>
+                </a>
+
+<?php }?>
+<?php if( $user['tokoid'] !== '' &&  $user['status'] == 'customer'){?>
+
+<a href="<?php echo site_url('Toko/TokoForm/'.$user['userid'].'/'. $user['tokoid'] ) ?>" class="btn btn-primary  btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-store"></i>
+                </span>
+                <span class="text">Cek Toko Request</span>
+            </a>
+
+<?php }?>
+<?php if( $user['tokoid'] != '' &&  $user['status'] == 'penjual'){?>
+
+<a href="<?php echo site_url('Toko/TokoForm/'.$user['userid'].'/'. $user['tokoid'] ) ?>" class="btn btn-primary  btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-store"></i>
+                </span>
+                <span class="text">Buka Request</span>
+            </a>
+
+<?php }?>
+         
+
                 <hr>
 
             </form>
@@ -181,7 +212,5 @@ $(document).ready(function() {
     $('#dataTable').DataTable();
 
 });
-
-
 </script>
 <!-- /.container-fluid -->

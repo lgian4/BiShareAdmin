@@ -15,25 +15,26 @@ class User_Model extends CI_Model
     public function get(string $userID = null)
     {
         if (empty($userID) || !isset($userID)) {return false;}
-        if ($this->database->getReference($this->dbname)->getSnapshot()->hasChild($userID)) {
+        if ($this->database->getReference($this->dbname)->orderByChild("dlt")
+            ->equalTo(false)->getSnapshot()->hasChild($userID)) {
             return $this->database->getReference($this->dbname)->getChild($userID)->getValue();
         } else {
             return false;
         }
     }
-    
+
     public function GetList()
     {
         $list = $this->database->getReference($this->dbname)
             ->orderByChild("dlt")
-            ->equalTo(false)            
+            ->equalTo(false)
             ->getValue();
         unset($list['count']);
-        usort($list, function ($a, $b) {     return strcmp($a["usercode"], $b["usercode"]); });
+        usort($list, function ($a, $b) {return strcmp($a["usercode"], $b["usercode"]);});
 
-        return  $list;
+        return $list;
     }
-  
+
     public function insert(array $data, string $userID)
     {
 
@@ -59,7 +60,7 @@ class User_Model extends CI_Model
             ];
             $this->database->getReference() // this is the root reference
                 ->update($updates);
-    
+
             return true;
         } else {
             return false;
@@ -91,8 +92,6 @@ class User_Model extends CI_Model
             ->equalTo($username)
             ->getValue();
 
-            
-            
         if (empty($user) || !isset($user)) {return false;}
         $key = array_key_first($user);
         if (empty($user[$key]) || !isset($user[$key])) {return false;}
@@ -172,6 +171,7 @@ class User_Model extends CI_Model
             "usercode" => '',
             "userdate" => date("Y-m-d H:i:s"),
             "userid" => "",
+            "tokoid" => "",
             "username" => "");
 
     }
