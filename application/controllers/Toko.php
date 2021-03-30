@@ -7,7 +7,7 @@ class Toko extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if (!$this->session->userdata('username') || $this->session->userdata('status') != 'admin') {
+        if (!$this->session->userdata('username') ) {
             redirect('Auth/SignIn');
         }
 

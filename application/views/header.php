@@ -64,6 +64,11 @@
                     <i class="fas fa-fw fa-building"></i>
                     <span>Toko</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo site_url('Kategori/Index') ?>">
+                    <i class="fas fa-fw fa-list"></i>
+                    <span>Kategori</span></a>
+            </li>
             
             <?php }?>
             <!-- Divider -->
