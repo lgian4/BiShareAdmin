@@ -7,7 +7,7 @@ class Toko extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if (!$this->session->userdata('username') ) {
+        if ($this->session->userdata('username') == null) {
             redirect('Auth/SignIn');
         }
 
@@ -140,10 +140,8 @@ class Toko extends CI_Controller
         $tokoid = $this->input->post('tokoid');
         $userid = $this->input->post('userid');
 
-
         $status = $this->input->post('status');
         $alasan = $this->input->post('alasan');
-
 
         //cek data
         if (!isset($userid) || $userid == '') {
@@ -169,10 +167,12 @@ class Toko extends CI_Controller
             $toko['tokodate'] = date("Y-m-d H:i:s");
             $this->toko_model->insert($toko, $toko['tokoid']);
 
-
             if ($status == 'approve') {
                 $user = $this->user_model->get($userid);
-                $user['status'] = 'penjual';
+                if ($status == 'customer') {
+                    $user['status'] = 'penjual';
+                }
+
                 $user['tokoid'] = $toko['tokoid'];
                 $this->user_model->insert($user, $user['userid']);
             }
@@ -196,8 +196,6 @@ class Toko extends CI_Controller
         $this->load->view('footer', $data);
     }
 
-
-
     public function Delete()
     {
         $data = LoadDataAwal('Delete');
@@ -215,7 +213,7 @@ class Toko extends CI_Controller
 
         $this->toko_model->SoftDelete($toko['tokoid']);
         $user = $this->user_model->get($toko['userid']);
-        $user['tokoid'] ='';
+        $user['tokoid'] = '';
         $this->user_model->insert($user, $user['userid']);
         return ReturnJsonSimple(true, 'Suksus', 'toko dihapus');
     }

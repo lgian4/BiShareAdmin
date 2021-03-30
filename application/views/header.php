@@ -72,14 +72,14 @@
            
                 <li class="nav-item">
                 <a class="nav-link" href="<?php echo site_url("Produk/Index/$tokoid") ?>">
-                    <i class="fas fa-fw fa-list"></i>
+                    <i class="fas fa-fw fa-tshirt"></i>
                     <span>Produk Ku</span></a>
             </li>
             <?php }?>
             <?php if($status== 'penjual') {?>
                 <li class="nav-item">
                 <a class="nav-link" href="<?php echo site_url("Produk/Index/$tokoid") ?>">
-                    <i class="fas fa-fw fa-cart"></i>
+                    <i class="fas fa-fw fa-tshirt"></i>
                     <span>Produk Ku</span></a>
             </li>
                 <?php }?>

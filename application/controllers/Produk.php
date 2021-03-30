@@ -7,7 +7,7 @@ class Produk extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if (!$this->session->userdata('username') || $this->session->userdata('status') == 'customer' ) {
+        if ($this->session->userdata('username') == null ) {
             redirect('Auth/SignIn');
         }
 
@@ -34,17 +34,17 @@ class Produk extends CI_Controller
         $this->load->view('ProdukList', $data);
         $this->load->view('footer', $data);
     }
-    public function KategoriForm($kategori = null)
+    public function ProdukForm($produk = null)
     {
-        $data = LoadDataAwal('Kategori Form');
+        $data = LoadDataAwal('Product Form');
 
-        $data['kategori'] = $this->kategori_model->GetEmpty();
-        if ($kategori != null) {
-            $data['kategori'] = $this->kategori_model->get($kategori);
+        $data['produk'] = $this->produk_model->GetEmpty();
+        if ($produk != null) {
+            $data['produk'] = $this->produk_model->get($produk);
         }
 
         $this->load->view('header', $data);
-        $this->load->view('KategoriForm', $data);
+        $this->load->view('ProdukForm', $data);
         $this->load->view('footer', $data);
     }
  

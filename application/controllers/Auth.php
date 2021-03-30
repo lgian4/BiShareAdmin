@@ -10,6 +10,7 @@ class Auth extends CI_Controller
         // if ($this->session->userdata('username')) {
         //     redirect('Admin');
         // }
+        $this->load->helper('new_helper');
     }
 
     public function SignIn()
@@ -119,15 +120,16 @@ class Auth extends CI_Controller
     }
     public function index()
     {
-        if (!$this->session->userdata('username')) {
+
+        if ($this->session->userdata('username')=='') {
             redirect('Auth/SignIn');
         }
-        $data['page_title'] = 'Login';
-        $data['nama'] = $this->session->userdata('nama');
-        $data['status'] = $this->session->userdata('status');
+        $data = LoadDataAwal('Dashboard');
 
         $this->load->view('header', $data);
+        
         $this->load->view('admin', $data);
+        
         $this->load->view('footer', $data);
     }
 }
