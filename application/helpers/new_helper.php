@@ -23,6 +23,7 @@ if ( ! function_exists('LoadDataAwal'))
         $data['page_title'] = $pageTitle;
         $data['nama'] = $CI->session->userdata('nama');
         $data['status'] = $CI->session->userdata('status');
+        $data['userid'] = $CI->session->userdata('userid');
         $data['username'] = $CI->session->userdata('username');
         $data['email'] = $CI->session->userdata('email');
         $data['error'] = $CI->session->flashdata('error');

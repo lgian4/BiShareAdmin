@@ -3,7 +3,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Toko List</h1>
+        <h1 class="h3 mb-0 text-gray-800">Toko List (<?php echo $tokostatus ?>)</h1>
 
     </div>
     <div class="card shadow mb-4">
@@ -11,7 +11,27 @@
             <div class="text-center text-danger">
                 <?php echo $error ?>
             </div>
-            
+            <a href="<?php echo site_url('Toko/Index/pending') ?>" class="btn btn-warning  btn-icon-split">
+
+                <span class="icon text-white-50">
+                    <i class="fas fa-clock"></i>
+                </span>
+                <span class="text">Pending</span>
+            </a>
+            <a href="<?php echo site_url('Toko/Index/approve') ?>" class="btn btn-success  btn-icon-split">
+
+                <span class="icon text-white-50">
+                    <i class="fas fa-check"></i>
+                </span>
+                <span class="text">Approve</span>
+            </a>
+            <a href="<?php echo site_url('Toko/Index/reject') ?>" class="btn btn-danger  btn-icon-split">
+
+                <span class="icon text-white-50">
+                    <i class="fas fa-window-close"></i>
+                </span>
+                <span class="text">Reject</span>
+            </a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -21,7 +41,7 @@
                             <th>#</th>
                             <th>Code</th>
                             <th>Nama</th>
-                            <th>Date</th>                            
+                            <th>Date</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -37,14 +57,15 @@
                             <td><?php echo $row['tokocode']; ?></td>
                             <td><?php echo $row['tokoname']; ?></td>
                             <td><?php echo $row['tokodate']; ?></td>
-                            
+
                             <td><?php echo $row['status']; ?></td>
                             <td>
                                 <a href="<?php echo site_url('Toko/TokoForm/'.$row['userid'].'/'.$row['tokoid']) ?>"
                                     class="btn btn-primary btn-circle btn-sm">
                                     <i class="fa fa-link"></i>
                                 </a>
-                                <button onclick="DeleteData('<?php echo $row['tokocode'] ?>','<?php echo $row['tokoid'] ?>')"
+                                <button
+                                    onclick="DeleteData('<?php echo $row['tokocode'] ?>','<?php echo $row['tokoid'] ?>')"
                                     class="btn btn-danger btn-circle btn-sm">
                                     <i class="fa fa-trash"></i>
                                 </button>
@@ -72,9 +93,9 @@ function DeleteData(xusercode, xuserid) {
     swal.fire({
         title: "Apakah anda yakin untuk menghapus",
         icon: 'error',
-        text:"Usercode : " + xusercode,
+        text: "Usercode : " + xusercode,
         showCancelButton: true,
-        
+
         confirmButtonText: "Delete",
         cancelButtonText: "Cancel",
         buttonsStyling: true
@@ -88,23 +109,22 @@ function DeleteData(xusercode, xuserid) {
                 cache: false,
                 success: function(response) {
                     console.log(response);
-                    if(response['success']){
+                    if (response['success']) {
                         swal.fire(
-                        "Success!",
-                        "Data telah terhapus!",
-                        "success"
-                    );
-                    location.reload(); 
-                    }
-                    else {
+                            "Success!",
+                            "Data telah terhapus!",
+                            "success"
+                        );
+                        location.reload();
+                    } else {
 
                         swal.fire(
-                        response['head'],
-                        response['text'],
-                        "error"
-                    ); 
+                            response['head'],
+                            response['text'],
+                            "error"
+                        );
                     }
-                    
+
                 },
                 failure: function(response) {
                     swal.fire(
@@ -116,7 +136,7 @@ function DeleteData(xusercode, xuserid) {
             });
         },
         function(dismiss) {
-            
+
         });
 }
 </script>

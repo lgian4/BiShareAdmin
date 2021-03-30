@@ -108,7 +108,6 @@ class User extends CI_Controller
         $user['nama'] = $nama;
         $user['nohp'] = $nohp;
         $user['password'] = $password;
-        $user['status'] = 'customer';
         $user['tanggallahir'] = $tanggallahir;
         $user['alamat'] = $alamat;
         $user['username'] = $username;
@@ -118,7 +117,6 @@ class User extends CI_Controller
 
         redirect("User/Profile");
         return;
-
     }
     public function Save()
     {
@@ -162,7 +160,7 @@ class User extends CI_Controller
         if (!isset($userid) || $userid == '') {
 
             //cek data email, username duplicate
-            if ($this->user_model->Duplicate($username, $email, )) {
+            if ($this->user_model->Duplicate($username, $email,)) {
                 $this->session->set_flashdata('error', 'Username atau email Duplicate');
                 redirect("User/UserForm/$userid");
                 return;
@@ -177,13 +175,17 @@ class User extends CI_Controller
             $user['nama'] = $nama;
             $user['nohp'] = $nohp;
             $user['password'] = $password;
-            $user['status'] = 'customer';
+            if (!isset($status) || $status == '') {
+                $user['status'] =  'customer';
+            } else {
+                $user['status'] =  $status;
+            }
             $user['tanggallahir'] = $tanggallahir;
             $user['alamat'] = $alamat;
             $user['username'] = $username;
             $user['userdate'] = date("Y-m-d H:i:s");
             $user['userid'] = $count;
-            $user['usercode'] ='U'. $count;
+            $user['usercode'] = 'U' . $count;
 
             $this->user_model->insert($user, $count);
             $userid = $user['userid'];
@@ -196,7 +198,7 @@ class User extends CI_Controller
             $user['nama'] = $nama;
             $user['nohp'] = $nohp;
             $user['password'] = $password;
-            $user['status'] = 'customer';
+
             $user['tanggallahir'] = $tanggallahir;
             $user['alamat'] = $alamat;
             $user['username'] = $username;
@@ -207,7 +209,6 @@ class User extends CI_Controller
 
         redirect("User/UserForm/" . $userid);
         return;
-
     }
 
     public function Delete()
@@ -229,6 +230,5 @@ class User extends CI_Controller
         $this->user_model->SoftDelete($user['userid']);
 
         return ReturnJsonSimple(true, 'Suksus', 'User dihapus');
-
     }
 }

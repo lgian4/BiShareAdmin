@@ -24,13 +24,14 @@ class Toko extends CI_Controller
         $data['error'] = $this->session->flashdata('error');
 
         $toko = $this->toko_model->getlist();
+        $data['tokostatus'] = $status;
+        $hasil = [];
         for ($x = 0; $x < count($toko); $x++) {
             if ($toko[$x]['status'] == $status) {
-                unset($toko[$x]);
+                array_push($hasil,$toko[$x]);                
             }
-
         }
-        $data['toko'] = $toko;
+        $data['toko'] = $hasil;
         $this->load->view('header', $data);
         $this->load->view('TokoList', $data);
         $this->load->view('footer', $data);
@@ -144,72 +145,7 @@ class Toko extends CI_Controller
         $this->load->view('footer', $data);
     }
 
-    public function SaveProfile()
-    {
-
-        $data['page_title'] = 'Save';
-        $email = $this->input->post('email');
-        $jeniskelamin = $this->input->post('jeniskelamin');
-        $nama = $this->input->post('nama');
-        $nohp = $this->input->post('nohp');
-        $password = $this->input->post('password');
-        $status = $this->input->post('status');
-        $tanggallahir = $this->input->post('tanggallahir');
-        $alamat = $this->input->post('alamat');
-        $username = $this->input->post('username');
-        $userid = $this->input->post('userid');
-        $usercode = $this->input->post('usercode');
-        $userdate = $this->input->post('userdate');
-
-        //cek data
-        $validUserid = $this->session->userdata('userid');
-        if ($validUserid != $userid) {
-            $this->session->set_flashdata('error', 'User Salah');
-            redirect("User/Profile/");
-            return;
-        }
-        if (!isset($email) || $email == '') {
-            $this->session->set_flashdata('error', 'Email kosong');
-            redirect("User/Profile");
-            return;
-        } else if (!isset($jeniskelamin) || $jeniskelamin == '') {
-            $this->session->set_flashdata('error', 'Jenis Kelamin kosong');
-            redirect("User/Profile");
-            return;
-        } else if (!isset($nama) || $nama == '') {
-            $this->session->set_flashdata('error', 'Nama kosong');
-            redirect("User/Profile");
-            return;
-        } else if (!isset($password) || $password == '') {
-            $this->session->set_flashdata('error', 'Password kosong');
-            redirect("User/Profile");
-            return;
-        } else if (!isset($username) || $username == '') {
-            $this->session->set_flashdata('error', 'Username kosong');
-            redirect("User/Profile");
-            return;
-        }
-
-        //update
-        $user = $this->user_model->get($userid);
-
-        $user['email'] = $email;
-        $user['jeniskelamin'] = $jeniskelamin;
-        $user['nama'] = $nama;
-        $user['nohp'] = $nohp;
-        $user['password'] = $password;
-        $user['status'] = 'customer';
-        $user['tanggallahir'] = $tanggallahir;
-        $user['alamat'] = $alamat;
-        $user['username'] = $username;
-
-        $this->user_model->insert($user, $user['userid']);
-        $userid = $user['userid'];
-
-        redirect("User/Profile");
-        return;
-
-    }
+  
 
     public function Delete()
     {
