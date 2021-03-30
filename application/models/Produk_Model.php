@@ -1,10 +1,10 @@
 <?php
-class Toko_Model extends CI_Model
+class Produk_Model extends CI_Model
 {
 
     public $database;
     public $fire;
-    protected $dbname = 'toko';
+    protected $dbname = 'produk';
     public function __construct()
     {
         $this->load->library('firebase');
@@ -14,11 +14,13 @@ class Toko_Model extends CI_Model
 
     public function get(string $userID = null)
     {
-        if (empty($userID) || !isset($userID)) {return false;}
+        if (empty($userID) || !isset($userID)) {
+            return false;
+        }
         if ($this->database->getReference($this->dbname)->orderByChild("dlt")
-            ->equalTo(false)->getSnapshot()->hasChild($userID)) {
+            ->equalTo(false)->getSnapshot()->hasChild($userID)
+        ) {
             return $this->database->getReference($this->dbname)->getChild($userID)->getValue();
-
         } else {
             return false;
         }
@@ -31,17 +33,39 @@ class Toko_Model extends CI_Model
             ->equalTo(false)
             ->getValue();
         unset($list['count']);
-        usort($list, function ($a, $b) {return strcmp($a["tokocode"], $b["tokocode"]);});
+        usort($list, function ($a, $b) {
+            return strcmp($a["produkcode"], $b["produkcode"]);
+        });
 
         return $list;
     }
+    public function GetListByToko($tokoid)
+    {
+        $list = $this->database->getReference($this->dbname)
+            ->orderByChild("tokoid")
+            ->equalTo($tokoid)
+            ->getValue();
+        unset($list['count']);
+        usort($list, function ($a, $b) {
+            return strcmp($a["produkcode"], $b["produkcode"]);
+        });
+        $hasil = [];
+        for ($x = 0; $x < count($list); $x++) {
+            if ($list[$x]['tokoid'] == $tokoid) {
+                array_push($hasil, $list[$x]);
+            }
+        }
+        return $hasil;
+    }
 
-   
+
 
     public function insert(array $data, string $userID)
     {
 
-        if (empty($data) || !isset($data)) {return false;}
+        if (empty($data) || !isset($data)) {
+            return false;
+        }
 
         $updates = [
             $this->dbname . '/' . $userID => $data,
@@ -50,11 +74,12 @@ class Toko_Model extends CI_Model
             ->update($updates);
 
         return $data;
-
     }
     public function SoftDelete(int $userID)
     {
-        if (empty($userID) || !isset($userID)) {return false;}
+        if (empty($userID) || !isset($userID)) {
+            return false;
+        }
         if ($this->database->getReference($this->dbname)->getSnapshot()->hasChild($userID)) {
             $data = $this->database->getReference($this->dbname)->getChild($userID)->getValue();
             $data['dlt'] = true;
@@ -71,7 +96,9 @@ class Toko_Model extends CI_Model
     }
     public function delete(int $userID)
     {
-        if (empty($userID) || !isset($userID)) {return false;}
+        if (empty($userID) || !isset($userID)) {
+            return false;
+        }
         if ($this->database->getReference($this->dbname)->getSnapshot()->hasChild($userID)) {
             $this->database->getReference($this->dbname)->getChild($userID)->remove();
             return true;
@@ -80,30 +107,53 @@ class Toko_Model extends CI_Model
         }
     }
     public function AddCount()
-    {        
+    {
         $count = $this->database->getReference($this->dbname)->getChild('count')->getValue() + 1;
-        
+
         $this->database->getReference()->getChild($this->dbname)->getChild('count')->set($count);
+        return $count;
+    }
+
+    public function AddCountMedia($id)
+    {
+        $count = $this->database->getReference($this->dbname)->getChild($id)->getChild('produkmediacount')->getValue() + 1;
+
+        $this->database->getReference()->getChild($this->dbname)->getChild($id)->getChild('produkmediacount')->set($count);
         return $count;
     }
 
     public function GetEmpty()
     {
         return array(
+            "produkid" => "",
             "tokoid" => "",
-            "dlt" => false,
-            "userid" => "",
-            "usernama" => "",
-            "tokocode" => "",
-            "tokodate" => date("Y-m-d H:i:s"),
             "tokoname" => "",
-            "tokodesc" => "",
-            "kontak" => "",
-
-            "foto" => '',
+            "kategoriid" => "",
+            "kategoriname" => "",
+            "dlt" => false,
+            "produkcode" => "",
+            "produkdate" => date("Y-m-d H:i:s"),
+            "produkname" => "",
+            "stok" => 0,
+            "harga" => 0,
+            "deskripsi" => "",
+            "fitur" => "",
+            "spesifikasi" => "",
+            "produkmedia" => [],
+            "produkmediacount" => 0,
             "status" => '',
             "alasan" => '',
         );
-
+    }
+    public function GetMediaEmpty()
+    {
+        return array(
+            "mediaid" => "",
+            "mediaurl" => "",
+            "medianama" => "",
+            "mediatype" => "",
+            "mediadate" => date("Y-m-d H:i:s"),
+            "dlt" => false,
+        );
     }
 }

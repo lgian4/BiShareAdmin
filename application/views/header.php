@@ -69,8 +69,20 @@
                     <i class="fas fa-fw fa-list"></i>
                     <span>Kategori</span></a>
             </li>
-            
+           
+                <li class="nav-item">
+                <a class="nav-link" href="<?php echo site_url("Produk/Index/$tokoid") ?>">
+                    <i class="fas fa-fw fa-list"></i>
+                    <span>Produk Ku</span></a>
+            </li>
             <?php }?>
+            <?php if($status== 'penjual') {?>
+                <li class="nav-item">
+                <a class="nav-link" href="<?php echo site_url("Produk/Index/$tokoid") ?>">
+                    <i class="fas fa-fw fa-cart"></i>
+                    <span>Produk Ku</span></a>
+            </li>
+                <?php }?>
             <!-- Divider -->
             <hr class="sidebar-divider">
 

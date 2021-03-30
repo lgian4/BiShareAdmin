@@ -24,6 +24,7 @@ if ( ! function_exists('LoadDataAwal'))
         $data['nama'] = $CI->session->userdata('nama');
         $data['status'] = $CI->session->userdata('status');
         $data['userid'] = $CI->session->userdata('userid');
+        $data['tokoid'] = $CI->session->userdata('tokoid');
         $data['username'] = $CI->session->userdata('username');
         $data['email'] = $CI->session->userdata('email');
         $data['error'] = $CI->session->flashdata('error');
