@@ -214,7 +214,7 @@ class User extends CI_Controller
     public function Delete()
     {
         $data = LoadDataAwal('User Form');
-
+        $userid = $this->input->post('userid');
         //cek data
         if (!isset($userid) || $userid == '') {
             return ReturnJsonSimple(false, 'Gagal', 'User Kosong');

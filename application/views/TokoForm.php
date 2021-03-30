@@ -1,7 +1,7 @@
 <!-- Begin Page Content -->
 <?php 
 $inputVisibility = 'readonly';
-if($userid == $toko['userid']){
+if($userid == $toko['userid'] || $status =='admin'){
     $inputVisibility = 'required';
 }
 ?>
@@ -106,7 +106,7 @@ if($userid == $toko['userid']){
                             'name' => 'alasan',
                             'class' => 'form-control',
                             'placeholder' => 'Isi alasan',
-                           'required'=>'',
+                           'readonly'=>'',
                             'value'=> $toko['alasan']
                             );
                             echo form_textarea($formcontrol);
@@ -114,8 +114,39 @@ if($userid == $toko['userid']){
                     </div>
                 </div>
                 <?php } ?>
+
+
+
+                <?php  if($inputVisibility == 'required'){ ?>
                 <hr>
-                <?php  if($status == 'admin'){ ?>
+
+                <button type="submit" class="btn btn-success  btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-save"></i>
+                    </span>
+                    <?php if($toko['status']=='reject'){?>
+                    <span class="text">Request Ulang</span>
+                    <?php }  else {?>
+                    <span class="text">Save</span>
+                    <?php }  ?>
+                </button>
+                <?php } ?>
+
+
+            </form>
+        </div>
+        <?php if($status =='admin' && $toko['status'] =='pending' && $toko['tokoid']!= '') {?>
+        <div class="card-header">
+            <h4>Review</h4>
+        </div>
+        <div class="card-body">
+            <div class="text-center text-danger">
+                <?php echo $error ?>
+            </div>
+            <form action="<?php echo site_url('Toko/Review') ?>" method="post">
+                <input type="hidden" name="tokoid" value="<?php echo $toko['tokoid'] ?>" />
+                <input type="hidden" name="userid" value="<?php echo $toko['userid'] ?>" />
+
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Alasan</label>
                     <div class="col-sm-10">
@@ -146,26 +177,17 @@ if($userid == $toko['userid']){
                      ?>
 
                     </div>
+
                     <button type="submit" class="btn btn-warning  btn-icon-split">
                         <span class="icon text-white-50">
                             <i class="fas fa-check"></i>
                         </span>
                         <span class="text">Review</span>
                     </button>
-                    <?php } else if($inputVisibility == 'required'){ ?>
-
-                    <button type="submit" class="btn btn-success  btn-icon-split">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-save"></i>
-                        </span>
-                        <span class="text">Save</span>
-                    </button>
-                    <?php } ?>
-                    <hr>
-
             </form>
-        </div>
+        </div><?php }?>
     </div>
+</div>
 
 
 

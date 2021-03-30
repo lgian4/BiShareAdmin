@@ -28,7 +28,7 @@ class Toko extends CI_Controller
         $hasil = [];
         for ($x = 0; $x < count($toko); $x++) {
             if ($toko[$x]['status'] == $status) {
-                array_push($hasil,$toko[$x]);                
+                array_push($hasil, $toko[$x]);
             }
         }
         $data['toko'] = $hasil;
@@ -45,14 +45,12 @@ class Toko extends CI_Controller
 
         if ($tokoid != null) {
             $data['toko'] = $this->toko_model->get($tokoid);
-
         } else {
             $user = $this->user_model->get($userid);
             if (!isset($user)) {
                 $this->session->set_flashdata('error', 'User Kosong');
                 redirect("Toko/Index/");
                 return;
-
             }
             $data['toko']['userid'] = $user['userid'];
             $data['toko']['usernama'] = $user['nama'];
@@ -80,15 +78,15 @@ class Toko extends CI_Controller
         //cek data
         if (!isset($userid) || $userid == '') {
             $this->session->set_flashdata('error', 'User kosong');
-            redirect("Toko/TokoForm/$userid");
+            redirect("Toko/TokoForm/$userid/$tokoid");
             return;
         } else if (!isset($tokoname) || $tokoname == '') {
             $this->session->set_flashdata('error', 'Toko kosong');
-            redirect("Toko/TokoForm/$userid");
+            redirect("Toko/TokoForm/$userid/$tokoid");
             return;
         } else if (!isset($tokodesc) || $tokodesc == '') {
             $this->session->set_flashdata('error', 'Deskripso kosong');
-            redirect("Toko/TokoForm/$userid");
+            redirect("Toko/TokoForm/$userid/$tokoid");
             return;
         }
         if (!isset($tokoid) || $tokoid == '') {
@@ -120,7 +118,12 @@ class Toko extends CI_Controller
 
             $toko['tokoname'] = $tokoname;
             $toko['tokodesc'] = $tokodesc;
-            $toko['status'] = 'pending';
+            $toko['status'] = $status;
+
+            if ($status == 'reject') {
+                $toko['status'] = 'pending';
+            }
+
             $toko['kontak'] = $kontak;
 
             $this->toko_model->insert($toko, $toko['tokoid']);
@@ -129,7 +132,55 @@ class Toko extends CI_Controller
 
         redirect("Toko/TokoForm/" . $userid . '/' . $tokoid);
         return;
+    }
+    public function Review()
+    {
 
+        $data['page_title'] = 'Review';
+        $tokoid = $this->input->post('tokoid');
+        $userid = $this->input->post('userid');
+
+
+        $status = $this->input->post('status');
+        $alasan = $this->input->post('alasan');
+
+
+        //cek data
+        if (!isset($userid) || $userid == '') {
+            $this->session->set_flashdata('error', 'User kosong');
+            redirect("Toko/TokoForm/$userid/$tokoid");
+            return;
+        } else if (!isset($alasan) || $alasan == '') {
+            $this->session->set_flashdata('error', 'alasan kosong');
+            redirect("Toko/TokoForm/$userid/$tokoid");
+            return;
+        }
+        if (!isset($tokoid) || $tokoid == '') {
+
+            $this->session->set_flashdata('error', 'Toko kosong');
+            redirect("Toko/TokoForm/$userid/$tokoid");
+            return;
+        } else {
+            //update
+            $toko = $this->toko_model->get($tokoid);
+
+            $toko['status'] = $status;
+            $toko['alasan'] = $alasan;
+            $toko['tokodate'] = date("Y-m-d H:i:s");
+            $this->toko_model->insert($toko, $toko['tokoid']);
+
+
+            if ($status == 'approve') {
+                $user = $this->user_model->get($userid);
+                $user['status'] = 'penjual';
+                $user['tokoid'] = $toko['tokoid'];
+                $this->user_model->insert($user, $user['userid']);
+            }
+            $tokoid = $toko['tokoid'];
+        }
+
+        redirect("Toko/TokoForm/" . $userid . '/' . $tokoid);
+        return;
     }
     public function Profile()
     {
@@ -145,27 +196,27 @@ class Toko extends CI_Controller
         $this->load->view('footer', $data);
     }
 
-  
+
 
     public function Delete()
     {
-        $data = LoadDataAwal('User Form');
-
+        $data = LoadDataAwal('Delete');
+        $tokoid = $this->input->post('tokoid');
         //cek data
-        if (!isset($userid) || $userid == '') {
-            return ReturnJsonSimple(false, 'Gagal', 'User Kosong');
+        if (!isset($tokoid) || $tokoid == '') {
+            return ReturnJsonSimple(false, 'Gagal', 'Toko Kosong');
         }
-
         //pastikan jika ada
-        $user = $this->user_model->get($userid);
-        if (!isset($user) || $user['userid'] == '') {
-            return ReturnJsonSimple(false, 'Gagal', 'User Kosong');
+        $toko = $this->toko_model->get($tokoid);
+        if (!isset($toko) || $toko['tokoid'] == '') {
+            return ReturnJsonSimple(false, 'Gagal', 'Toko Kosong');
         }
         // hapus
 
-        $this->user_model->SoftDelete($user['userid']);
-
-        return ReturnJsonSimple(true, 'Suksus', 'User dihapus');
-
+        $this->toko_model->SoftDelete($toko['tokoid']);
+        $user = $this->user_model->get($toko['userid']);
+        $user['tokoid'] ='';
+        $this->user_model->insert($user, $user['userid']);
+        return ReturnJsonSimple(true, 'Suksus', 'toko dihapus');
     }
 }

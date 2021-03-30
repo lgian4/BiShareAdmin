@@ -192,7 +192,7 @@
                 <span class="icon text-white-50">
                     <i class="fas fa-store"></i>
                 </span>
-                <span class="text">Buka Request</span>
+                <span class="text">Buka Toko</span>
             </a>
 
 <?php }?>

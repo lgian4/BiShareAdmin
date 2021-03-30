@@ -166,6 +166,36 @@
                                         </span>
                                         <span class="text">Save</span>
                                     </button>
+                                    <?php  if( (!isset($user['tokoid']) || $user['tokoid'] == '') &&  $user['status'] == 'customer'){ $user['tokoid'] ='' ;?>
+
+<a href="<?php echo site_url('Toko/TokoForm/'.$user['userid'].'/'. $user['tokoid'] ) ?>" class="btn btn-primary  btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-store"></i>
+                </span>
+                <span class="text">Request Buka Toko</span>
+            </a>
+
+<?php }?>
+<?php if( $user['tokoid'] !== '' &&  $user['status'] == 'customer'){?>
+
+<a href="<?php echo site_url('Toko/TokoForm/'.$user['userid'].'/'. $user['tokoid'] ) ?>" class="btn btn-primary  btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-store"></i>
+            </span>
+            <span class="text">Cek Toko Request</span>
+        </a>
+
+<?php }?>
+<?php if( $user['tokoid'] != '' &&  $user['status'] == 'penjual'){?>
+
+<a href="<?php echo site_url('Toko/TokoForm/'.$user['userid'].'/'. $user['tokoid'] ) ?>" class="btn btn-primary  btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-store"></i>
+            </span>
+            <span class="text">Buka Toko</span>
+        </a>
+
+<?php }?>
                
                 <hr>
 

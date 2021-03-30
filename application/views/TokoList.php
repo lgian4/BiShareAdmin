@@ -3,7 +3,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Toko List (<?php echo $tokostatus ?>)</h1>
+        <h1 class="h3 mb-0 text-gray-800">Toko List (<?php echo ucfirst($tokostatus) ?>)</h1>
 
     </div>
     <div class="card shadow mb-4">
@@ -65,7 +65,7 @@
                                     <i class="fa fa-link"></i>
                                 </a>
                                 <button
-                                    onclick="DeleteData('<?php echo $row['tokocode'] ?>','<?php echo $row['tokoid'] ?>')"
+                                    onclick="DeleteData('<?php echo $row['tokoname'] ?>','<?php echo $row['tokoid'] ?>')"
                                     class="btn btn-danger btn-circle btn-sm">
                                     <i class="fa fa-trash"></i>
                                 </button>
@@ -93,7 +93,7 @@ function DeleteData(xusercode, xuserid) {
     swal.fire({
         title: "Apakah anda yakin untuk menghapus",
         icon: 'error',
-        text: "Usercode : " + xusercode,
+        text: "Toko Code : " + xusercode,
         showCancelButton: true,
 
         confirmButtonText: "Delete",
@@ -102,9 +102,9 @@ function DeleteData(xusercode, xuserid) {
     }).then(function() {
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('User/Delete') ?>",
+                url: "<?php echo site_url('Toko/Delete') ?>",
                 data: {
-                    'userid': xuserid
+                    'tokoid': xuserid
                 },
                 cache: false,
                 success: function(response) {
