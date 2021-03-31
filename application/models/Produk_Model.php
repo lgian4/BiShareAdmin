@@ -159,7 +159,9 @@ class Produk_Model extends CI_Model
             "mediaurl" => "",
             "medianama" => "",
             "mediatype" => "",
+            "mediaext" => "",
             "mediadate" => date("Y-m-d H:i:s"),
+            "mediasize" => 0,
             "dlt" => false,
         );
     }

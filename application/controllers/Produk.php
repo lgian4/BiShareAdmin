@@ -16,21 +16,51 @@ class Produk extends CI_Controller
         $this->load->model('kategori_model');
         $this->load->helper('new_helper');
     }
-    public function Uploadmedia(){
+    public function Uploadmedia()
+    {
+
+        // cari produk
+        $produkid = $this->input->post('produkid');
+        $produk = $this->produk_model->get($produkid);
+        if ($produk == null || !isset($produk)) {
+            $this->session->set_flashdata('error', 'Produk kosong');
+            redirect("Produk/ProdukForm/$produkid");
+            return;
+        }
+        //ambil count
+        $count = $this->produk_model->AddCountMedia($produkid);
+
+        // isi ke produkmedia
+        $media = $this->produk_model->GetMediaEmpty();
+
         $bucket =  $this->produk_model->defaultBucket;
-        var_dump($_FILES['uploadfile']['tmp_name']);
-      
-       $object = $bucket->upload(
+
+        $dname = explode("/", $_FILES['uploadfile']['type']);
+        $media['mediatype'] = reset($dname);
+        $dname = explode(".", $_FILES['uploadfile']['name']);
+        $media['mediaext'] = end($dname);
+        $media['mediasize'] = $_FILES['uploadfile']['size'];
+        $media['mediaid'] = $count;
+        $media['medianama'] = $produkid . $count . "." . $media['mediaext'];
+
+        //upload file
+        $object = $bucket->upload(
             file_get_contents($_FILES['uploadfile']['tmp_name']),
             [
-                'name' => 'Produk/1/1.jpg',
+                'name' => 'Produk/' . $media['medianama'],
                 'predefinedAcl' => 'publicRead'
             ]
         );
 
-        $publicUrl = "https://{$bucket->name()}.storage.googleapis.com/{$object->name()}";
-        var_dump($publicUrl);
-      return;
+        $media['mediaurl'] = "https://{$bucket->name()}.storage.googleapis.com/{$object->name()}";
+        if (!isset($produk['produkmedia']) || $produk['produkmedia'] == null) {
+            $produk['produkmedia'] = [];
+        }
+        $produk['produkmedia'][$count] =  $media;
+
+        $this->produk_model->insert($produk, $produk['produkid']);
+        redirect("Produk/ProdukForm/$produkid");
+        return;
     }
 
     public function Index($tokoid =  null)
@@ -66,33 +96,34 @@ class Produk extends CI_Controller
         $this->load->view('produkListAdmin', $data);
         $this->load->view('footer', $data);
     }
-    public function ProdukForm($produk = null,$produkid =null)
+    public function ProdukForm($produk = null, $produkid = null)
     {
         $data = LoadDataAwal('Product Form');
-        
-      
+
+
         if ($this->session->userdata('status') != 'admin') {
             $tokoid = $this->session->userdata('tokoid');
         }
         if (!isset($tokoid) || $tokoid == '') {
             $tokoid = $this->session->userdata('tokoid');
-            
         }
 
         $data['produk'] = $this->produk_model->GetEmpty();
-        if ($produk != null && $produk != 'null')  {
+        if ($produk != null && $produk != 'null') {
             $data['produk'] = $this->produk_model->get($produk);
-        }
-        else {
+        } else {
             $toko = $this->toko_model->Get($tokoid);
-           
+
             $data['produk']['tokoid'] = $toko['tokoid'];
             $data['produk']['tokoname'] = $toko['tokoname'];
             $data['produk']['status'] = 'pending';
         }
-        
+
         $data['kategori'] = $this->kategori_model->getlist();
-        
+
+        if (!isset($data['produk']['produkmedia']) || $data['produk']['produkmedia'] == null) {
+            $data['produk']['produkmedia'] = array();
+        }
 
         $this->load->view('header', $data);
         $this->load->view('ProdukForm', $data);
@@ -160,7 +191,7 @@ class Produk extends CI_Controller
             $produk['harga'] = $harga;
             $produk['deskripsi'] = $deskripsi;
             $produk['fitur'] = $fitur;
-            $produk['spesifikasi'] = $spesifikasi;          
+            $produk['spesifikasi'] = $spesifikasi;
 
             $this->produk_model->insert($produk, $count);
 
@@ -168,7 +199,7 @@ class Produk extends CI_Controller
         } else {
             //update
             $produk = $this->produk_model->get($produkid);
-         
+
             $produk['produkcode'] = $produkcode;
             $produk['produkdate'] = date("Y-m-d H:i:s");
             $produk['tokoid'] = $tokoid;
@@ -186,7 +217,7 @@ class Produk extends CI_Controller
             $produk['harga'] = $harga;
             $produk['deskripsi'] = $deskripsi;
             $produk['fitur'] = $fitur;
-            $produk['spesifikasi'] = $spesifikasi;      
+            $produk['spesifikasi'] = $spesifikasi;
 
             $this->produk_model->insert($produk, $produk['produkid']);
             $produkid = $produk['produkid'];
@@ -216,9 +247,33 @@ class Produk extends CI_Controller
 
         return ReturnJsonSimple(true, 'Sukses', 'produk dihapus');
     }
+    public function DeleteMedia()
+    {
+        $data = LoadDataAwal('produk media');
+        $produkid = $this->input->post('produkid');
+        $mediaid = $this->input->post('mediaid');
+        //cek data
+        if (!isset($produkid) || $produkid == '') {
+            return ReturnJsonSimple(false, 'Gagal', 'produk Kosong');
+        }
+
+        //pastikan jika ada
+        $produk = $this->produk_model->get($produkid);
+        if (!isset($produk) || $produk['produkid'] == '') {
+            return ReturnJsonSimple(false, 'Gagal', 'produk Kosong');
+        }
+        // hapus
+
+        $this->produk_model->SoftDelete($produk['produkid']);
+
+        $bucket.deleteFiles({
+            prefix: "posts/$postId"
+          );
+        return ReturnJsonSimple(true, 'Sukses', 'produk dihapus');
+    }
     public function Review()
     {
-        $data = LoadDataAwal('Review');        
+        $data = LoadDataAwal('Review');
         $produkid = $this->input->post('produkid');
         $tokoid = $this->input->post('tokoid');
 

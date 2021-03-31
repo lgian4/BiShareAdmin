@@ -182,10 +182,60 @@
                     <span class="icon text-white-50">
                         <i class="fas fa-upload"></i>
                     </span>
-                    <span class="text">Upoad</span>
+                    <span class="text">Upload</span>
                 </button>
             </form>
         </div><?php }?>
+        <div class="card-header">
+            <h4>Produk Media</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama</th>
+                            <th>Type</th>
+                            <th>Ext</th>
+                            <th>Size</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $i= 1; ?>
+                        <?php foreach($produk['produkmedia'] as $row): ?>
+
+                        <tr>
+                            <?php if($row['dlt']) continue; ?>
+                            <td><?php echo $i++; ?></td>
+
+                            <td><?php echo $row['medianama']; ?></td>
+                            <td><?php echo $row['mediatype']; ?></td>
+                            <td><?php echo $row['mediaext']; ?></td>
+                            <td><?php echo $row['mediasize']; ?></td>
+                            <td><?php echo $row['mediadate']; ?></td>
+                            
+                            <td>
+                                <a href="<?php echo $row['mediaurl'] ?>" target="_blank"
+                                    class="btn btn-primary btn-circle btn-sm">
+                                    <i class="fa fa-link"></i>
+                                </a>
+                                <button onclick="DeleteData('<?php echo $row['mediaid'] ?>','<?php echo $row['mediaid'] ?>')"
+                                    class="btn btn-danger btn-circle btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <?php if($status =='admin' && $produk['produkid']!= '') {?>
         <div class="card-header">
             <h4>Review</h4>
