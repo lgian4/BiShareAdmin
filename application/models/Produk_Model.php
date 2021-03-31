@@ -123,9 +123,10 @@ class Produk_Model extends CI_Model
 
     public function AddCountMedia($id)
     {
-        $count = $this->database->getReference($this->dbname)->getChild($id)->getChild('produkmediacount')->getValue() + 1;
+        $count = $this->database->getReference($this->dbname)->getChild($id."/produkmediacount")->getValue() + 1;
 
-        $this->database->getReference()->getChild($this->dbname)->getChild($id)->getChild('produkmediacount')->set($count);
+        $this->database->getReference()->getChild($this->dbname)->getChild($id."/produkmediacount")->set($count);
+        
         return $count;
     }
 
@@ -156,6 +157,7 @@ class Produk_Model extends CI_Model
     {
         return array(
             "mediaid" => "",
+            "produkid" => "",
             "mediaurl" => "",
             "medianama" => "",
             "mediatype" => "",

@@ -33,7 +33,7 @@ class Produk extends CI_Controller
         // isi ke produkmedia
         $media = $this->produk_model->GetMediaEmpty();
 
-        $bucket =  $this->produk_model->defaultBucket;
+        $bucket = $this->produk_model->defaultBucket;
 
         $dname = explode("/", $_FILES['uploadfile']['type']);
         $media['mediatype'] = reset($dname);
@@ -41,14 +41,15 @@ class Produk extends CI_Controller
         $media['mediaext'] = end($dname);
         $media['mediasize'] = $_FILES['uploadfile']['size'];
         $media['mediaid'] = $count;
-        $media['medianama'] = $produkid . $count . "." . $media['mediaext'];
+        $media['produkid'] = $produk['produkid'];
+        $media['medianama'] = $count . "." . $media['mediaext'];
 
         //upload file
         $object = $bucket->upload(
             file_get_contents($_FILES['uploadfile']['tmp_name']),
             [
-                'name' => 'Produk/' . $media['medianama'],
-                'predefinedAcl' => 'publicRead'
+                'name' => 'Produk/' . $produkid . "/" . $media['medianama'],
+                'predefinedAcl' => 'publicRead',
             ]
         );
 
@@ -56,14 +57,14 @@ class Produk extends CI_Controller
         if (!isset($produk['produkmedia']) || $produk['produkmedia'] == null) {
             $produk['produkmedia'] = [];
         }
-        $produk['produkmedia'][$count] =  $media;
+        $produk['produkmedia'][$count] = $media;
 
         $this->produk_model->insert($produk, $produk['produkid']);
         redirect("Produk/ProdukForm/$produkid");
         return;
     }
 
-    public function Index($tokoid =  null)
+    public function Index($tokoid = null)
     {
         $data = LoadDataAwal('Daftar Produk Saya');
 
@@ -96,11 +97,10 @@ class Produk extends CI_Controller
         $this->load->view('produkListAdmin', $data);
         $this->load->view('footer', $data);
     }
-    public function ProdukForm($produk = null, $produkid = null)
+    public function ProdukForm($produk = null, $tokoid = null)
     {
         $data = LoadDataAwal('Product Form');
-
-
+       
         if ($this->session->userdata('status') != 'admin') {
             $tokoid = $this->session->userdata('tokoid');
         }
@@ -120,6 +120,7 @@ class Produk extends CI_Controller
         }
 
         $data['kategori'] = $this->kategori_model->getlist();
+        $data['toko'] = $this->toko_model->getlist();
 
         if (!isset($data['produk']['produkmedia']) || $data['produk']['produkmedia'] == null) {
             $data['produk']['produkmedia'] = array();
@@ -165,6 +166,7 @@ class Produk extends CI_Controller
             return;
         }
         $kategori = $this->kategori_model->Get($kategoriid);
+        $toko = $this->toko_model->Get($tokoid);
 
         if (!isset($produkid) || $produkid == '') {
 
@@ -172,19 +174,19 @@ class Produk extends CI_Controller
             $count = $this->produk_model->AddCount();
             $produk = $this->produk_model->GetEmpty();
 
-
             $produk['produkid'] = $count;
             $produk['produkcode'] = $produkcode;
             $produk['produkdate'] = date("Y-m-d H:i:s");
             $produk['tokoid'] = $tokoid;
-            $produk['tokoname'] = $tokoname;
+            $produk['tokoname'] = $toko['tokoname'];
             $produk['kategoriid'] = $kategoriid;
             $produk['kategoriname'] = $kategori['kategoriname'];
 
             if ($data['status'] == 'admin') {
                 $produk['status'] = 'approve';
-            } else
+            } else {
                 $produk['status'] = 'pending';
+            }
 
             $produk['produkname'] = $produkname;
             $produk['stok'] = $stok;
@@ -252,7 +254,7 @@ class Produk extends CI_Controller
         $data = LoadDataAwal('produk media');
         $produkid = $this->input->post('produkid');
         $mediaid = $this->input->post('mediaid');
-        //cek data
+
         if (!isset($produkid) || $produkid == '') {
             return ReturnJsonSimple(false, 'Gagal', 'produk Kosong');
         }
@@ -262,14 +264,19 @@ class Produk extends CI_Controller
         if (!isset($produk) || $produk['produkid'] == '') {
             return ReturnJsonSimple(false, 'Gagal', 'produk Kosong');
         }
+
         // hapus
-
-        $this->produk_model->SoftDelete($produk['produkid']);
-
-        $bucket.deleteFiles({
-            prefix: "posts/$postId"
-          );
-        return ReturnJsonSimple(true, 'Sukses', 'produk dihapus');
+        $bucket = $this->produk_model->defaultBucket;
+        $object = $bucket->upload(
+           null,
+            [
+                'name' => "Produk/".$produk['produkid']."/".$produk['produkmedia'][$mediaid]['medianama'],
+                'predefinedAcl' => 'publicRead',
+            ]
+        );
+        $produk['produkmedia'][$mediaid]['dlt'] = true;
+        $this->produk_model->insert($produk, $produk['produkid']);
+        return ReturnJsonSimple(true, 'Sukses', 'Media dihapus');
     }
     public function Review()
     {

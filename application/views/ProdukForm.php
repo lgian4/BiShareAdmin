@@ -14,7 +14,7 @@
             </div>
             <form action="<?php echo site_url('Produk/Save') ?>" method="post">
                 <input type="hidden" name="produkid" value="<?php echo $produk['produkid'] ?>" />
-                <input type="hidden" name="produkid" value="<?php echo $produk['tokoid'] ?>" />
+
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Status</label>
                     <div class="col-sm-10">
@@ -22,6 +22,8 @@
                             readonly>
                     </div>
                 </div>
+                <?php if($status != 'admin' || $produk['produkid'] != '') {?>
+                <input type="hidden" name="produkid" value="<?php echo $produk['tokoid'] ?>" />
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Toko</label>
                     <div class="col-sm-10">
@@ -29,6 +31,21 @@
                             value="<?php echo $produk['tokoname'] ?>" readonly>
                     </div>
                 </div>
+                <?php }else{?>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Toko</label>
+                    <div class="col-sm-10">
+                        <?php 
+                     $options = array('' => 'Pilih salah satu',);
+                     foreach ($toko as $key => $value) {
+                         $options[$value['tokoid']] = $value['tokoname'];
+                     }
+                    echo form_dropdown('tokoid', $options, $produk['tokoid'],'class="form-control required"');
+                     ?>
+
+                    </div>
+                </div>
+                <?php }?>
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Code</label>
                     <div class="col-sm-10">
@@ -168,16 +185,15 @@
             </div>
             <form action="<?php echo site_url('produk/UploadMedia') ?>" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="produkid" value="<?php echo $produk['produkid'] ?>" />
-                
+
 
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">File</label>
                     <div class="col-sm-10">
-                        <input type="file" name="uploadfile" class="form-control" accept="image/*,video/*"
-                           required>
+                        <input type="file" name="uploadfile" class="form-control" accept="image/*,video/*" required>
                     </div>
                 </div>
-              
+
                 <button type="submit" class="btn btn-primary  btn-icon-split">
                     <span class="icon text-white-50">
                         <i class="fas fa-upload"></i>
@@ -185,7 +201,7 @@
                     <span class="text">Upload</span>
                 </button>
             </form>
-        </div><?php }?>
+      
         <div class="card-header">
             <h4>Produk Media</h4>
         </div>
@@ -208,7 +224,7 @@
                         <?php foreach($produk['produkmedia'] as $row): ?>
 
                         <tr>
-                            <?php if($row['dlt']) continue; ?>
+                            <?php if( $row == null || $row['dlt'] ) continue; ?>
                             <td><?php echo $i++; ?></td>
 
                             <td><?php echo $row['medianama']; ?></td>
@@ -216,13 +232,14 @@
                             <td><?php echo $row['mediaext']; ?></td>
                             <td><?php echo $row['mediasize']; ?></td>
                             <td><?php echo $row['mediadate']; ?></td>
-                            
+
                             <td>
                                 <a href="<?php echo $row['mediaurl'] ?>" target="_blank"
                                     class="btn btn-primary btn-circle btn-sm">
                                     <i class="fa fa-link"></i>
                                 </a>
-                                <button onclick="DeleteData('<?php echo $row['mediaid'] ?>','<?php echo $row['mediaid'] ?>')"
+                                <button
+                                    onclick="DeleteMedia('<?php echo $row['medianama'] ?>','<?php echo $row['mediaid'] ?>')"
                                     class="btn btn-danger btn-circle btn-sm">
                                     <i class="fa fa-trash"></i>
                                 </button>
@@ -236,6 +253,7 @@
                 </table>
             </div>
         </div>
+        </div><?php }?>
         <?php if($status =='admin' && $produk['produkid']!= '') {?>
         <div class="card-header">
             <h4>Review</h4>
@@ -297,5 +315,57 @@ $(document).ready(function() {
     $('#dataTable').DataTable();
 
 });
+function DeleteMedia(xusercode, xuserid) {
+    swal.fire({
+        title: "Apakah anda yakin untuk menghapus",
+        icon: 'error',
+        text:"Nama File : " + xusercode,
+        showCancelButton: true,
+        
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        buttonsStyling: true
+    }).then(function() {
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url('Produk/DeleteMedia') ?>",
+                data: {
+                    'mediaid': xuserid,
+                    'produkid': <?php echo $produk['produkid'] ?>,
+                },
+                cache: false,
+                success: function(response) {
+                    console.log(response);
+                    if(response['success']){
+                        swal.fire(
+                        "Success!",
+                        "Data telah terhapus!",
+                        "success"
+                    );
+                    location.reload(); 
+                    }
+                    else {
+
+                        swal.fire(
+                        response['head'],
+                        response['text'],
+                        "error"
+                    ); 
+                    }
+                    
+                },
+                failure: function(response) {
+                    swal.fire(
+                        "Internal Error",
+                        "Oops, your note was not saved.", // had a missing comma
+                        "error"
+                    )
+                }
+            });
+        },
+        function(dismiss) {
+            
+        });
+}
 </script>
 <!-- /.container-fluid -->
