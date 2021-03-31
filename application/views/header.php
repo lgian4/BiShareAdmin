@@ -35,7 +35,8 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center"
+                href="<?php echo site_url('Auth/Index') ?>">
                 <div class="sidebar-brand-icon">
                     <img src="<?php echo base_url() ?>assets/img/logo-small.png" alt="Logo Small" width="100%">
                 </div>
@@ -47,7 +48,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="<?php echo site_url('Auth/Index') ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -69,20 +70,24 @@
                     <i class="fas fa-fw fa-list"></i>
                     <span>Kategori</span></a>
             </li>
-           
-                <li class="nav-item">
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo site_url("Produk/Produklist/") ?>">
+                    <i class="fas fa-fw fa-tshirt"></i>
+                    <span>Daftar Produk </span></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="<?php echo site_url("Produk/Index/$tokoid") ?>">
                     <i class="fas fa-fw fa-tshirt"></i>
                     <span>Produk Ku</span></a>
             </li>
             <?php }?>
             <?php if($status== 'penjual') {?>
-                <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" href="<?php echo site_url("Produk/Index/$tokoid") ?>">
                     <i class="fas fa-fw fa-tshirt"></i>
                     <span>Produk Ku</span></a>
             </li>
-                <?php }?>
+            <?php }?>
             <!-- Divider -->
             <hr class="sidebar-divider">
 

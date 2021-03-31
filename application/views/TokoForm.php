@@ -191,7 +191,7 @@ if($userid == $toko['userid'] || $status =='admin'){
 
 
 
-</div>
+
 <script>
 $(document).ready(function() {
     $('#dataTable').DataTable();

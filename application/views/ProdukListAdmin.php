@@ -3,7 +3,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Produk List</h1>
+        <h1 class="h3 mb-0 text-gray-800">Produk List Admin (<?php echo ucfirst($produkstatus) ?>) </h1>
 
     </div>
     <div class="card shadow mb-4">
@@ -11,6 +11,28 @@
             <div class="text-center text-danger">
                 <?php echo $error ?>
             </div>
+            <a href="<?php echo site_url('Produk/Produklist/pending') ?>" class="btn btn-warning  btn-icon-split">
+
+                <span class="icon text-white-50">
+                    <i class="fas fa-clock"></i>
+                </span>
+                <span class="text">Pending</span>
+            </a>
+            <a href="<?php echo site_url('Produk/Produklist/approve') ?>" class="btn btn-success  btn-icon-split">
+
+                <span class="icon text-white-50">
+                    <i class="fas fa-check"></i>
+                </span>
+                <span class="text">Approve</span>
+            </a>
+            <a href="<?php echo site_url('Produk/Produklist/reject') ?>" class="btn btn-danger  btn-icon-split">
+
+                <span class="icon text-white-50">
+                    <i class="fas fa-window-close"></i>
+                </span>
+                <span class="text">Reject</span>
+            </a>
+            <hr>
             <a href="<?php echo site_url("Produk/ProdukForm/null/$tokoid") ?>" class="btn btn-primary  btn-icon-split">
 
                 <span class="icon text-white-50">
@@ -46,13 +68,14 @@
                             <td><?php echo $row['tokoname']; ?></td>
                             <td><?php echo $row['kategoriname']; ?></td>
                             <td><?php echo $row['status']; ?></td>
-                            
+
                             <td>
                                 <a href="<?php echo site_url('Produk/ProdukForm/'.$row['produkid']) ?>"
                                     class="btn btn-primary btn-circle btn-sm">
                                     <i class="fa fa-link"></i>
                                 </a>
-                                <button onclick="DeleteData('<?php echo $row['produkcode'] ?>','<?php echo $row['produkid'] ?>')"
+                                <button
+                                    onclick="DeleteData('<?php echo $row['produkcode'] ?>','<?php echo $row['produkid'] ?>')"
                                     class="btn btn-danger btn-circle btn-sm">
                                     <i class="fa fa-trash"></i>
                                 </button>
@@ -80,9 +103,9 @@ function DeleteData(xusercode, xuserid) {
     swal.fire({
         title: "Apakah anda yakin untuk menghapus",
         icon: 'error',
-        text:"Produk code : " + xusercode,
+        text: "Produk code : " + xusercode,
         showCancelButton: true,
-        
+
         confirmButtonText: "Delete",
         cancelButtonText: "Cancel",
         buttonsStyling: true
@@ -96,23 +119,22 @@ function DeleteData(xusercode, xuserid) {
                 cache: false,
                 success: function(response) {
                     console.log(response);
-                    if(response['success']){
+                    if (response['success']) {
                         swal.fire(
-                        "Success!",
-                        "Data telah terhapus!",
-                        "success"
-                    );
-                    location.reload(); 
-                    }
-                    else {
+                            "Success!",
+                            "Data telah terhapus!",
+                            "success"
+                        );
+                        location.reload();
+                    } else {
 
                         swal.fire(
-                        response['head'],
-                        response['text'],
-                        "error"
-                    ); 
+                            response['head'],
+                            response['text'],
+                            "error"
+                        );
                     }
-                    
+
                 },
                 failure: function(response) {
                     swal.fire(
@@ -124,7 +146,7 @@ function DeleteData(xusercode, xuserid) {
             });
         },
         function(dismiss) {
-            
+
         });
 }
 </script>

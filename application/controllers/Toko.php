@@ -169,10 +169,9 @@ class Toko extends CI_Controller
 
             if ($status == 'approve') {
                 $user = $this->user_model->get($userid);
-                if ($status == 'customer') {
+                if ($user['status'] == 'customer') {
                     $user['status'] = 'penjual';
                 }
-
                 $user['tokoid'] = $toko['tokoid'];
                 $this->user_model->insert($user, $user['userid']);
             }

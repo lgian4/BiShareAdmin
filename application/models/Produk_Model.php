@@ -3,13 +3,20 @@ class Produk_Model extends CI_Model
 {
 
     public $database;
+    public $storage;
     public $fire;
+    public $storageClient;
+    public $defaultBucket;
     protected $dbname = 'produk';
     public function __construct()
     {
         $this->load->library('firebase');
         $this->fire = $this->firebase->init();
         $this->database = $this->fire->createDatabase();
+        $this->storage = $this->fire->createStorage();
+
+        $this->storageClient = $this->storage->getStorageClient();
+        $this->defaultBucket = $this->storage->getBucket();
     }
 
     public function get(string $userID = null)
