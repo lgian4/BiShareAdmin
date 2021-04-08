@@ -29,7 +29,7 @@ class Produk extends CI_Controller
         }
         //ambil count
         $count = $this->produk_model->AddCountMedia($produkid);
-
+        
         // isi ke produkmedia
         $media = $this->produk_model->GetMediaEmpty();
 
@@ -60,6 +60,7 @@ class Produk extends CI_Controller
         $produk['produkmedia'][$count] = $media;
 
         $this->produk_model->insert($produk, $produk['produkid']);
+
         redirect("Produk/ProdukForm/$produkid");
         return;
     }
