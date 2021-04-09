@@ -125,6 +125,58 @@ class Auth extends CI_Controller
             redirect('Auth/SignIn');
         }
         $data = LoadDataAwal('Dashboard');
+        $this->load->model('kategori_model');
+        $this->load->model('produk_model');
+        $this->load->model('user_model');
+        $this->load->model('toko_model');
+
+        $kategori = $this->kategori_model->GetList();
+        $kategoricount = 0;
+        foreach ($kategori as  $value) {
+            if($value['dlt'])
+                continue;
+            $kategoricount++;
+        }
+        $data['kategoricount'] = NumberNice( $kategoricount);
+
+        $produk = $this->produk_model->GetList();
+        $produkcount = 0;
+        $produkpendingcount = 0;
+        foreach ($produk as  $value) {
+            if($value['dlt'])
+                continue;
+            if($value["status"] =="approve")
+            $produkcount++;
+            if($value["status"] =="pending")
+            $produkpendingcount++;
+        }
+        $data['produkcount'] = NumberNice( $produkcount);
+        $data['produkpendingcount'] = NumberNice( $produkpendingcount);
+
+        $user = $this->user_model->GetList();
+        $usercount = 0;
+        $tokocount = 0;
+        foreach ($user as  $value) {
+            if($value['dlt'])
+                continue; 
+            if($value["status"] =="customer")           
+            $usercount++;            
+            if($value["status"] =="penjual")           
+            $tokocount++;            
+        }
+        $data['usercount'] = NumberNice( $usercount);        
+        $data['tokocount'] = NumberNice( $tokocount);  
+
+        $toko = $this->toko_model->GetList();
+       
+        $tokopendingcount = 0;
+        foreach ($toko as  $value) {
+            if($value['dlt'])
+                continue;       
+            if($value["status"] =="pending")
+            $tokopendingcount++;
+        }        
+        $data['tokopendingcount'] = NumberNice( $tokopendingcount);
 
         $this->load->view('header', $data);
         

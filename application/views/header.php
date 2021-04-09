@@ -24,6 +24,69 @@
     <script src="<?php echo base_url() ?>assets/vendor/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url() ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo base_url() ?>assets/vendor/sweetalert2/sweetalert2.all.min.js"></script>
+    <style>
+    .bg-gradient-primary {
+        background-color: #fb6c04;
+        background-image: linear-gradient(180deg, #fb6c04 10%, #ca6c04 100%);
+        background-size: cover;
+
+    }
+
+    .btn-primary {
+
+        background-color: #fb6c04;
+        border-color: #fb6c04;
+    }
+
+    a {
+        color: #fb6c04;
+    }
+
+    .btn-primary:hover {
+        color: #fff;
+        background-color: #ca6c04;
+        border-color: #ca6c04;
+    }
+
+    .btn-primary:focus,
+    .btn-primary.focus {
+        color: #fff;
+        background-color: #ca6c04;
+        border-color: #ca6c04;
+        box-shadow: 0 0 0 0.2rem rgba(105, 136, 228, 0.5);
+    }
+
+    
+    .btn-primary.disabled,
+    .btn-primary:disabled {
+        color: #fff;
+        background-color: #fb6c04;
+        border-color: #fb6c04
+    }
+
+    .btn-primary:not(:disabled):not(.disabled).active,
+    .btn-primary:not(:disabled):not(.disabled):active,
+    .show>.btn-primary.dropdown-toggle {
+        color: #fff;
+        background-color: #fb6c04;
+        border-color: #fb6c04
+    }
+
+    .page-item.active .page-link {
+        z-index: 3;
+        color: #fff;
+        background-color: #fb6c04;
+        border-color: #fb6c04
+    }
+
+    .page-item.disabled .page-link {
+        color: #858796;
+        pointer-events: none;
+        cursor: auto;
+        background-color: #fff;
+        border-color: #dddfeb
+    }
+    </style>
 </head>
 
 <body id="page-top">
@@ -36,7 +99,7 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center"
-                href="<?php echo site_url('Auth/Index') ?>">
+                href="<?php echo site_url('Auth/Index') ?>" style=" background-color: #fb6c04;">
                 <div class="sidebar-brand-icon">
                     <img src="<?php echo base_url() ?>assets/img/logo-small.png" alt="Logo Small" width="100%">
                 </div>
@@ -83,7 +146,7 @@
             </li>
             <?php }?>
             <?php if($status== 'penjual') {?>
-                
+
             <li class="nav-item">
                 <a class="nav-link" href="<?php echo site_url("Produk/Index/$tokoid") ?>">
                     <i class="fas fa-fw fa-tshirt"></i>
@@ -91,7 +154,7 @@
             </li>
             <?php }?>
             <!-- Divider -->
-    
+
 
 
         </ul>

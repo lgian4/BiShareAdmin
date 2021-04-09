@@ -32,3 +32,23 @@ if ( ! function_exists('LoadDataAwal'))
     }  
    
 }
+
+if ( ! function_exists('NumberNice'))
+{
+    function NumberNice($n) {
+        // first strip any formatting;
+        $n = (0+str_replace(",","",$n));
+       
+        // is this a number?
+        if(!is_numeric($n)) return false;
+       
+        // now filter it;
+        if($n>1000000000000) return round(($n/1000000000000),1).' T';
+        else if($n>1000000000) return round(($n/1000000000),1).' M';
+        else if($n>1000000) return round(($n/1000000),1).' Juta';
+        else if($n>1000) return round(($n/1000),1).' Ribu';
+       
+        return number_format($n);
+    }
+   
+}
