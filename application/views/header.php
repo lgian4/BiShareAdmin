@@ -99,11 +99,11 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center"
-                href="<?php echo site_url('Auth/Index') ?>" style=" background-color: #fb6c04;">
+                href="<?php echo site_url('Auth/Index') ?>" style=" background-color: #fff;">
                 <div class="sidebar-brand-icon">
-                    <img src="<?php echo base_url() ?>assets/img/logo-small.png" alt="Logo Small" width="100%">
+                    <img src="<?php echo base_url() ?>assets/img/logo.png" alt="Logo Small" width="100%">
                 </div>
-                <div class="sidebar-brand-text mx-3">BiShare <sup>Admin</sup></div>
+                
             </a>
 
             <!-- Divider -->
