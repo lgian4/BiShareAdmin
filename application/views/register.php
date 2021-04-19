@@ -158,8 +158,7 @@
                                         <?php echo $error ?>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="<?php echo site_url('Auth/Register') ?>">Create an
-                                            Account!</a>
+                                        <a class="small" href="<?php echo site_url('Auth/SignIn') ?>">Sign In!</a>
                                     </div>
                                 </div>
                             </div>

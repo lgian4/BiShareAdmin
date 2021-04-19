@@ -138,6 +138,11 @@
                     <i class="fas fa-fw fa-tshirt"></i>
                     <span>Daftar Produk </span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo site_url("Rekomendasi/Index") ?>">
+                    <i class="fas fa-fw fa-sort-amount-up"></i>
+                    <span>Rekomendasi </span></a>
+            </li>
             <hr class="sidebar-divider">
             <li class="nav-item">
                 <a class="nav-link" href="<?php echo site_url("Produk/Index/$tokoid") ?>">
