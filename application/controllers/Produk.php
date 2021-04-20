@@ -61,7 +61,7 @@ class Produk extends CI_Controller
 
         $this->produk_model->insert($produk, $produk['produkid']);
 
-        redirect("Produk/ProdukForm/$produkid");
+        redirect("Produk/ProdukForm/$produkid#medialist");
         return;
     }
 
@@ -120,6 +120,8 @@ class Produk extends CI_Controller
             $data['produk']['status'] = 'pending';
         }
 
+        
+
         $data['kategori'] = $this->kategori_model->getlist();
         $data['toko'] = $this->toko_model->getlist();
 
@@ -151,6 +153,9 @@ class Produk extends CI_Controller
         $spesifikasi = $this->input->post('spesifikasi');
         $status = $this->input->post('status');
         $alasan = $this->input->post('alasan');
+
+
+      
 
         //cek data
         if (!isset($tokoid) || $tokoid == '') {
@@ -203,6 +208,19 @@ class Produk extends CI_Controller
             //update
             $produk = $this->produk_model->get($produkid);
 
+            //ubah semua nama di database lain jika berubah
+            
+            if ($produk['produkname'] != $produkname && $produk['produkid'] != null) {
+                $this->load->model('rekomendasi_model');
+                $rekomendasi = $this->rekomendasi_model->GetListByProduk($produkid);
+                foreach ($rekomendasi as $value) {
+                    if ($value['produkid'] == $produk['produkid'] && $value['dlt'] == false)  {
+                        $value['produkname'] = $produkname;                         
+                        $this->rekomendasi_model->insert($value,$value['rekomendasiid']);
+                    }
+                }
+            }
+
             $produk['produkcode'] = $produkcode;
             $produk['produkdate'] = date("Y-m-d H:i:s");
             $produk['tokoid'] = $tokoid;
@@ -223,14 +241,7 @@ class Produk extends CI_Controller
             $produk['spesifikasi'] = $spesifikasi;
 
             $this->produk_model->insert($produk, $produk['produkid']);
-            $this->load->model('rekomendasi_model');
-            $rekomendasi = $this->rekomendasi_model->GetListByProduk($produkid);
-            foreach ($rekomendasi as $key => $value) {
-                if($value['produkid'] == $produk['produkid']){
-                    $value['produkname'] = $produk['produkname'];
-                    $this->prekomendasi_model->insert($value,$key);
-                }                
-            }
+            
             
             $produkid = $produk['produkid'];
         }
@@ -256,6 +267,16 @@ class Produk extends CI_Controller
         // hapus
 
         $this->produk_model->SoftDelete($produk['produkid']);
+       $this->load->model('rekomendasi_model');
+       $rekomendasi = $this->rekomendasi_model->GetListByProduk($produkid);
+       foreach ($rekomendasi as $value) {
+           if ($value['produkid'] == $produk['produkid'] && $value['dlt'] == false)  {
+               $value['produkname'] .= '-Deleted';                         
+               $value['dlt'] = true;                         
+               $this->rekomendasi_model->insert($value,$value['rekomendasiid']);
+           }
+       }
+        
 
         return ReturnJsonSimple(true, 'Sukses', 'produk dihapus');
     }

@@ -118,16 +118,17 @@ class Toko extends CI_Controller
             $toko = $this->toko_model->get($tokoid);
 
 
-            if ($toko['tokoname'] != $tokoname) {
+            if ($toko['tokoname'] != $tokoname && $toko['tokoid'] != null) {
                 $produk = $this->produk_model->GetListByToko($tokoid);
                 foreach ($produk as $value) {
                     if ($value['tokoid'] == $toko['tokoid'] && $value['dlt'] == false)  {
-                        $value['tokoname'] = $tokoname; //
-                        var_dump($value);
-                        //$this->produk_model->insert($value,$value['produkid']);
+                        $value['tokoname'] = $tokoname; 
+                        
+                        $this->produk_model->insert($value,$value['produkid']);
                     }
                 }
             }
+            
             $toko['tokoname'] = $tokoname;
             $toko['tokodesc'] = $tokodesc;
             $toko['status'] = $status;
@@ -226,6 +227,21 @@ class Toko extends CI_Controller
         // hapus
 
         $this->toko_model->SoftDelete($toko['tokoid']);
+
+
+        
+        $produk = $this->produk_model->GetListByToko($tokoid);
+        foreach ($produk as $value) {
+            if ($value['tokoid'] == $toko['tokoid'] && $value['dlt'] == false)  {
+                $value['tokoname'] .= '-Deleted'; 
+                $value['dlt'] += true; 
+                $this->produk_model->insert($value,$value['produkid']);
+            }
+        }
+        
+
+
+
         $user = $this->user_model->get($toko['userid']);
         $user['tokoid'] = '';
         $this->user_model->insert($user, $user['userid']);

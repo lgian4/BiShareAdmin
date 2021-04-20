@@ -39,8 +39,9 @@
 
                         <tr>
                             <?php if($row['dlt']) continue; ?>
-                            <td><?php echo $i++; ?></td>
-
+                            <td><?php echo $i++; ?> </td>
+                            
+                            
                             <td><?php echo $row['produkcode']; ?></td>
                             <td><?php echo $row['produkname']; ?></td>
                             <td><?php echo $row['tokoname']; ?></td>
