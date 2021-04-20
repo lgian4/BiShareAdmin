@@ -316,16 +316,15 @@ $(document).ready(function() {
 
 });
 function DeleteMedia(xusercode, xuserid) {
-    swal.fire({
+    swal({
         title: "Apakah anda yakin untuk menghapus",
-        icon: 'error',
-        text:"Nama File : " + xusercode,
+        type:'error',text:"Nama File : " + xusercode,
         showCancelButton: true,
         
         confirmButtonText: "Delete",
         cancelButtonText: "Cancel",
         buttonsStyling: true
-    }).then(function() {
+    },function() {
             $.ajax({
                 type: "POST",
                 url: "<?php echo site_url('Produk/DeleteMedia') ?>",
@@ -337,7 +336,7 @@ function DeleteMedia(xusercode, xuserid) {
                 success: function(response) {
                     console.log(response);
                     if(response['success']){
-                        swal.fire(
+                        swal(
                         "Success!",
                         "Data telah terhapus!",
                         "success"
@@ -346,7 +345,7 @@ function DeleteMedia(xusercode, xuserid) {
                     }
                     else {
 
-                        swal.fire(
+                        swal(
                         response['head'],
                         response['text'],
                         "error"
@@ -355,16 +354,13 @@ function DeleteMedia(xusercode, xuserid) {
                     
                 },
                 failure: function(response) {
-                    swal.fire(
+                    swal(
                         "Internal Error",
                         "Oops, your note was not saved.", // had a missing comma
                         "error"
                     )
                 }
             });
-        },
-        function(dismiss) {
-            
         });
 }
 </script>

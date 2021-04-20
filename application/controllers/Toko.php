@@ -12,6 +12,7 @@ class Toko extends CI_Controller
         }
 
         $this->load->model('toko_model');
+        $this->load->model('produk_model');
         $this->load->model('user_model');
         $this->load->helper('new_helper');
     }
@@ -116,6 +117,17 @@ class Toko extends CI_Controller
             //update
             $toko = $this->toko_model->get($tokoid);
 
+
+            if ($toko['tokoname'] != $tokoname) {
+                $produk = $this->produk_model->GetListByToko($tokoid);
+                foreach ($produk as $value) {
+                    if ($value['tokoid'] == $toko['tokoid'] && $value['dlt'] == false)  {
+                        $value['tokoname'] = $tokoname; //
+                        var_dump($value);
+                        //$this->produk_model->insert($value,$value['produkid']);
+                    }
+                }
+            }
             $toko['tokoname'] = $tokoname;
             $toko['tokodesc'] = $tokodesc;
             $toko['status'] = $status;
@@ -127,6 +139,9 @@ class Toko extends CI_Controller
             $toko['kontak'] = $kontak;
 
             $this->toko_model->insert($toko, $toko['tokoid']);
+
+
+
             $tokoid = $toko['tokoid'];
         }
 

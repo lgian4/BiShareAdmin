@@ -58,7 +58,7 @@ class Produk_Model extends CI_Model
         });
         $hasil = [];
         for ($x = 0; $x < count($list); $x++) {
-            if ($list[$x]['tokoid'] == $tokoid) {
+            if ($list[$x]['tokoid'] == $tokoid && $list[$x]['dlt']== false) {
                 array_push($hasil, $list[$x]);
             }
         }

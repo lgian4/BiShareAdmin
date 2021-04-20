@@ -20,10 +20,11 @@
 
     <!-- Custom styles for this template-->
     <link href="<?php echo base_url() ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="<?php echo base_url() ?>assets/vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet">
+    <link href="<?php echo base_url() ?>assets/js/sweetalert.css" rel="stylesheet">
+    <!-- <link href="<?php echo base_url() ?>assets/vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet"> -->
     <script src="<?php echo base_url() ?>assets/vendor/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url() ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="<?php echo base_url() ?>assets/vendor/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="<?php echo base_url() ?>assets/js/sweetalert.min.js"></script>
     <style>
     .bg-gradient-primary {
         background-color: #fb6c04;

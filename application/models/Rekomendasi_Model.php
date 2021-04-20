@@ -47,6 +47,24 @@ class Rekomendasi_Model extends CI_Model
         return $list;
     }
     
+    public function GetListByProduk($produkid)
+    {
+        $list = $this->database->getReference($this->dbname)
+            ->orderByChild("produkid")
+            ->equalTo($produkid)
+            ->getValue();
+        unset($list['count']);
+        usort($list, function ($a, $b) {
+            return strcmp($a["produkcode"], $b["produkcode"]);
+        });
+        $hasil = [];
+        for ($x = 0; $x < count($list); $x++) {
+            if ($list[$x]['produkid'] == $produkid) {
+                array_push($hasil, $list[$x]);
+            }
+        }
+        return $hasil;
+    }
 
 
     public function insert(array $data, string $userID)

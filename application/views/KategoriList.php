@@ -74,16 +74,15 @@ $(document).ready(function() {
 });
 
 function DeleteData(xusercode, xuserid) {
-    swal.fire({
+    swal({
         title: "Apakah anda yakin untuk menghapus",
-        icon: 'error',
-        text:"Kategori code : " + xusercode,
+        type:'error',text:"Kategori code : " + xusercode,
         showCancelButton: true,
         
         confirmButtonText: "Delete",
         cancelButtonText: "Cancel",
         buttonsStyling: true
-    }).then(function() {
+    }, function () {
             $.ajax({
                 type: "POST",
                 url: "<?php echo site_url('Kategori/Delete') ?>",
@@ -94,7 +93,7 @@ function DeleteData(xusercode, xuserid) {
                 success: function(response) {
                     console.log(response);
                     if(response['success']){
-                        swal.fire(
+                        swal(
                         "Success!",
                         "Data telah terhapus!",
                         "success"
@@ -103,7 +102,7 @@ function DeleteData(xusercode, xuserid) {
                     }
                     else {
 
-                        swal.fire(
+                        swal(
                         response['head'],
                         response['text'],
                         "error"
@@ -112,16 +111,13 @@ function DeleteData(xusercode, xuserid) {
                     
                 },
                 failure: function(response) {
-                    swal.fire(
+                    swal(
                         "Internal Error",
                         "Oops, your note was not saved.", // had a missing comma
                         "error"
                     )
                 }
             });
-        },
-        function(dismiss) {
-            
         });
 }
 </script>

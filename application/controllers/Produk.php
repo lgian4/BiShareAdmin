@@ -223,6 +223,15 @@ class Produk extends CI_Controller
             $produk['spesifikasi'] = $spesifikasi;
 
             $this->produk_model->insert($produk, $produk['produkid']);
+            $this->load->model('rekomendasi_model');
+            $rekomendasi = $this->rekomendasi_model->GetListByProduk($produkid);
+            foreach ($rekomendasi as $key => $value) {
+                if($value['produkid'] == $produk['produkid']){
+                    $value['produkname'] = $produk['produkname'];
+                    $this->prekomendasi_model->insert($value,$key);
+                }                
+            }
+            
             $produkid = $produk['produkid'];
         }
 
