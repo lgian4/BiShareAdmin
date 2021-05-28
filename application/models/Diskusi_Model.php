@@ -38,7 +38,17 @@ class Diskusi_Model extends CI_Model
 
    
 
-    public function insert(array $data, string $userID)
+    public function insert(array $data)
+    {
+
+        if (empty($data) || !isset($data)) {return false;}              
+        $ref =   $this->database->getReference( $this->dbname)->push($data);
+        $data['diskusiid'] = $ref->getKey();
+        $this->database->getReference( $this->dbname . '/' . $data['diskusiid'] )->set($data);
+        return $data;
+
+    }
+    public function update(array $data, string $userID)
     {
 
         if (empty($data) || !isset($data)) {return false;}

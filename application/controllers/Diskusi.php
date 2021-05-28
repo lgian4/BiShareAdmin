@@ -62,8 +62,6 @@ class Diskusi extends CI_Controller
         }
         if (!isset($diskusiid) || $diskusiid == '') {
 
-          
-
             //baru
             
             $diskusi = $this->diskusi_model->GetEmpty();
@@ -71,9 +69,9 @@ class Diskusi extends CI_Controller
             $diskusi['diskusiname'] = $diskusiname;
             $diskusi['diskusitype'] = $diskusitype;
             $diskusi['diskusidesc'] = $diskusidesc;          
-            $diskusi['diskusiid'] = $count;          
+            $diskusi['diskusiid'] = "";          
 
-            $this->diskusi_model->insert($diskusi, $count);
+            $diskusi = $this->diskusi_model->insert($diskusi);            
             $diskusiid = $diskusi['diskusiid'];
         } else {
             //update
@@ -83,7 +81,7 @@ class Diskusi extends CI_Controller
             $diskusi['diskusitype'] = $diskusitype;
             $diskusi['diskusidesc'] = $diskusidesc;  
 
-            $this->diskusi_model->insert($diskusi, $diskusi['diskusiid']);
+            $this->diskusi_model->update($diskusi, $diskusi['diskusiid']);
             $diskusiid = $diskusi['diskusiid'];
         }
 
