@@ -135,6 +135,11 @@
                     <span>Kategori</span></a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="<?php echo site_url('Diskusi/Index') ?>">
+                    <i class="fas fa-fw fa-list"></i>
+                    <span>Diskusi</span></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="<?php echo site_url("Produk/Produklist/") ?>">
                     <i class="fas fa-fw fa-tshirt"></i>
                     <span>Daftar Produk </span></a>

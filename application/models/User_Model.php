@@ -135,7 +135,7 @@ class User_Model extends CI_Model
         $postData = [
             'userid' => $usercode,
             'usercode' => 'U' . $usercode,
-            'userdate' => date(),
+            'userdate' => new date(),
             'nama' => $nama,
             'jeniskelamin' => $jeniskelamin,
             'tanggallahir' => $tanggallahir,

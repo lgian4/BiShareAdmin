@@ -112,6 +112,7 @@ class Produk extends CI_Controller
         $data['produk'] = $this->produk_model->GetEmpty();
         if ($produk != null && $produk != 'null') {
             $data['produk'] = $this->produk_model->get($produk);
+
         } else {
             $toko = $this->toko_model->Get($tokoid);
 
@@ -120,6 +121,8 @@ class Produk extends CI_Controller
             $data['produk']['status'] = 'pending';
         }
 
+       if(!isset ( $data['produk']['alasan'] )) 
+       $data['produk']['alasan'] = "";
         $data['kategori'] = $this->kategori_model->getlist();
         $data['toko'] = $this->toko_model->getlist();
 
