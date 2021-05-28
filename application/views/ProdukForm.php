@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <?php if($status != 'admin' || $produk['produkid'] != '') {?>
-                <input type="hidden" name="produkid" value="<?php echo $produk['tokoid'] ?>" />
+                <input type="hidden" name="tokoid" value="<?php echo $produk['tokoid'] ?>" />
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Toko</label>
                     <div class="col-sm-10">
@@ -203,7 +203,7 @@
             </form>
       
         <div class="card-header">
-            <h4>Produk Media</h4>
+            <h4 id="medialist">Produk Media</h4>
         </div>
         <div class="card-body">
             <div class="table-responsive">
