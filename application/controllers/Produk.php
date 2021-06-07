@@ -123,6 +123,9 @@ class Produk extends CI_Controller
 
        if(!isset ( $data['produk']['alasan'] )) 
        $data['produk']['alasan'] = "";
+
+       if(!isset ( $data['produk']['youtubevideo'] )) 
+       $data['produk']['youtubevideo'] = "";
         
 
         $data['kategori'] = $this->kategori_model->getlist();
@@ -151,6 +154,7 @@ class Produk extends CI_Controller
         $produkname = $this->input->post('produkname');
         $stok = $this->input->post('stok');
         $harga = $this->input->post('harga');
+        $youtubevideo = $this->input->post('youtubevideo');
         $deskripsi = $this->input->post('deskripsi');
         $fitur = $this->input->post('fitur');
         $spesifikasi = $this->input->post('spesifikasi');
@@ -201,6 +205,7 @@ class Produk extends CI_Controller
             $produk['stok'] = $stok;
             $produk['harga'] = $harga;
             $produk['deskripsi'] = $deskripsi;
+            $produk['youtubevideo'] = $youtubevideo;
             $produk['fitur'] = $fitur;
             $produk['spesifikasi'] = $spesifikasi;
 
@@ -227,8 +232,9 @@ class Produk extends CI_Controller
             $produk['produkcode'] = $produkcode;
             $produk['produkdate'] = date("Y-m-d H:i:s");
             $produk['tokoid'] = $tokoid;
-            $produk['tokoname'] = $tokoname;
+            $produk['tokoname'] = $toko['tokoname'];
             $produk['kategoriid'] = $kategoriid;
+            $produk['youtubevideo'] = $youtubevideo;
             $produk['kategoriname'] = $kategori['kategoriname'];
             $produk['status'] = $status;
 

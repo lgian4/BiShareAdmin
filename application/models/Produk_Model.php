@@ -151,6 +151,7 @@ class Produk_Model extends CI_Model
             "produkmediacount" => 0,
             "status" => '',
             "alasan" => '',
+            "youtubevideo" => '',
         );
     }
     public function GetMediaEmpty()

@@ -145,6 +145,13 @@
                     </div>
                 </div>
                 <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Video Youtube</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="youtubevideo" class="form-control"
+                            value="<?php echo $produk['youtubevideo'] ?>" >
+                    </div>
+                </div>
+                <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Alasan</label>
                     <div class="col-sm-10">
                         <?php 
@@ -190,7 +197,7 @@
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">File</label>
                     <div class="col-sm-10">
-                        <input type="file" name="uploadfile" class="form-control" accept="image/*,video/*" required>
+                        <input type="file" name="uploadfile" class="form-control" accept="image/*" required>
                     </div>
                 </div>
 
@@ -201,7 +208,7 @@
                     <span class="text">Upload</span>
                 </button>
             </form>
-      
+      </div>
         <div class="card-header">
             <h4 id="medialist">Produk Media</h4>
         </div>
@@ -253,7 +260,7 @@
                 </table>
             </div>
         </div>
-        </div><?php }?>
+        <?php }?>
         <?php if($status =='admin' && $produk['produkid']!= '') {?>
         <div class="card-header">
             <h4>Review</h4>
