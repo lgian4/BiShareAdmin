@@ -186,7 +186,7 @@
             </a>
 
 <?php }?>
-<?php if( $user['tokoid'] != '' &&  $user['status'] == 'penjual'){?>
+<?php if( $user['tokoid'] != '' ){?>
 
 <a href="<?php echo site_url('Toko/TokoForm/'.$user['userid'].'/'. $user['tokoid'] ) ?>" class="btn btn-primary  btn-icon-split">
                 <span class="icon text-white-50">

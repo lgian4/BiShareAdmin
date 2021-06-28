@@ -94,6 +94,24 @@ if($userid == $toko['userid'] || $status =='admin'){
                         ?>
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Alamat</label>
+                    <div class="col-sm-10">
+                        <?php 
+                        $formcontrol = array(
+                            'type' => 'textarea',
+                            'id' => 'alamat',
+                            'name' => 'alamat',
+                            'class' => 'form-control',
+                            'placeholder' => 'Isi alamat',
+                           
+                           " $inputVisibility"=>'',
+                            'value'=> $toko['alamat'] ?? ""
+                            );
+                            echo form_textarea($formcontrol);
+                        ?>
+                    </div>
+                </div>
                 <?php  if($toko['status'] != 'pending'){ ?>
 
                 <div class="row mb-3">

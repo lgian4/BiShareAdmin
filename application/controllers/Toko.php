@@ -74,6 +74,7 @@ class Toko extends CI_Controller
         $tokoid = $this->input->post('tokoid');
         $tokodesc = $this->input->post('tokodesc');
         $kontak = $this->input->post('kontak');
+        $alamat = $this->input->post('alamat');
         $status = $this->input->post('status');
 
         //cek data
@@ -104,6 +105,7 @@ class Toko extends CI_Controller
             $toko['tokodesc'] = $tokodesc;
             $toko['status'] = 'pending';
             $toko['kontak'] = $kontak;
+            $toko['alamat'] = $alamat;
             $toko['tokodate'] = date("Y-m-d H:i:s");
 
             $this->toko_model->insert($toko, $count);
@@ -138,7 +140,7 @@ class Toko extends CI_Controller
             }
 
             $toko['kontak'] = $kontak;
-
+            $toko['alamat'] = $alamat;
             $this->toko_model->insert($toko, $toko['tokoid']);
 
 
