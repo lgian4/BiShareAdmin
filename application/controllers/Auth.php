@@ -21,7 +21,7 @@ class Auth extends CI_Controller
     public function Register()
     {
         $data['error'] = $this->session->flashdata('error');
-        
+        $data['page_title'] = 'Register'; 
         $this->load->view('register',$data);
 
     }
